@@ -2,7 +2,11 @@ package FXQuick;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.reflections.Reflections;
@@ -52,9 +56,12 @@ public class FXConfigration {
 		FXConfigration.packageNames = packageNames;
 
 		System.out.println("------------------- Initialize FXServices -----------------");
-
+		
 		for (String packageName : packageNames) {
-			for (Class<?> clazz : (new Reflections(packageName)).getTypesAnnotatedWith(FXService.class)) {
+			Reflections refs = (new Reflections(packageName));
+			Set<Class<?>>annotatedClasses = refs.getTypesAnnotatedWith(FXController.class);
+			annotatedClasses.addAll(refs.getTypesAnnotatedWith(FXService.class));
+			for (Class<?> clazz : annotatedClasses ) {
 				System.out.println("---> " + clazz.getName());
 				if (!Modifier.isAbstract(clazz.getModifiers())) {
 					Object o;
@@ -62,7 +69,7 @@ public class FXConfigration {
 						o = clazz.newInstance();
 						ServiceManager.CLASSES.put(clazz, o);
 					} catch (InstantiationException | IllegalAccessException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 

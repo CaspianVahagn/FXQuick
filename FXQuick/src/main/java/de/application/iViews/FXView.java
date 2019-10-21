@@ -48,7 +48,10 @@ public abstract class FXView extends FXBase{
 		init();
 		
 	}
-
+	/**Loads a FXML file an sets this class to its controller
+	 * inject UI object with ids with @FXML 
+	 * @param url
+	 */
 	public void loadFXML(String url) {
 		URL val = FXView.class.getClassLoader().getResource(url);
 		loader = new FXMLLoader(val);
