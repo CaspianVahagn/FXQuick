@@ -8,6 +8,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+/**
+ * 
+ * @author Dominik Reset
+ *  
+ *  Generates a Label With a icon
+ *  by FontAwesomeIcon Jens Deters
+ */
 public class IconLabel extends Label{
 	
 	private String icon;
@@ -23,24 +30,28 @@ public class IconLabel extends Label{
 		this.icon = iconName;
 		if (iconName != null && iconName.length() > 1) {
 
-			iconName = iconName.toUpperCase();
+			iconName = iconName.toUpperCase(); 
 
 			glyph.setIcon(FontAwesomeIcons.valueOf(iconName));
 			glyph.setFill(Color.WHITE);
 			this.setGraphic(glyph);
 		}
 
-		FadeTransition transition = new FadeTransition(Duration.millis(100), this);
-		transition.setFromValue(1);
-		transition.setToValue(0);
-		transition.setAutoReverse(true);
-		transition.setCycleCount(2);
-
-		addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-			System.out.println("schisdfhseuirz34897");
-			transition.playFromStart();
-		});
+//		FadeTransition transition = new FadeTransition(Duration.millis(100), this);
+//		transition.setFromValue(1);
+//		transition.setToValue(0);
+//		transition.setAutoReverse(true);
+//		transition.setCycleCount(2);
+//
+//		addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+//			
+//			transition.playFromStart();
+//		});
 		
+	}
+	
+	public FontAwesomeIcon getGlyph() {
+		return glyph;
 	}
 
 

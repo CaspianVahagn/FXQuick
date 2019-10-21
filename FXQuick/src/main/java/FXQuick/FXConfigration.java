@@ -7,7 +7,12 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
-
+/**Configuration for Injection.
+ * This Class will scan and prepare Injections for Given classes.
+ * Each FXService will be a single Instance. 
+ * @author Dominik Reset
+ *
+ */
 public class FXConfigration {
 	private static final String ASCIIART = "  ________   __                __ _                       _   _             \r\n"
 			+ " |  ____\\ \\ / /               / _(_)                     | | (_)            \r\n"
@@ -31,12 +36,18 @@ public class FXConfigration {
 	public static void scanServices(String... packageNames) {
 		FXConfigration.packageNames = packageNames;
 	}
-
+	/**
+	 * provide packageNames for objects wich need injections on Runtime 
+	 * @param packageNames
+	 */
 	public static void scanRuntimeInjections(String... packageNames) {
 
 		FXConfigration.potentialInjections = packageNames;
 	}
-
+	/**
+	 * provide Packags with services to inject 
+	 * @param packageNames
+	 */
 	private static void applyScanServices(String... packageNames) {
 		FXConfigration.packageNames = packageNames;
 
@@ -87,13 +98,13 @@ public class FXConfigration {
 		for (String packageName : packageNames) {
 			Set<Field> fields = (new Reflections(packageName, scanner).getFieldsAnnotatedWith(FXInject.class));
 			for (Field field : fields) {
-				if (ServiceManager.DEMANDED_FILED.containsKey(field.getDeclaringClass())) {
-					ServiceManager.DEMANDED_FILED.get(field.getDeclaringClass()).add(field);
+				if (ServiceManager.DEMANDED_FIELDS.containsKey(field.getDeclaringClass())) {
+					ServiceManager.DEMANDED_FIELDS.get(field.getDeclaringClass()).add(field);
 				} else {
 					Set<Field> fieldset = new HashSet<>();
 					fieldset.add(field);
 					System.out.println("[prepare for]---> " + field.getDeclaringClass().getName());
-					ServiceManager.DEMANDED_FILED.put(field.getDeclaringClass(), fieldset);
+					ServiceManager.DEMANDED_FIELDS.put(field.getDeclaringClass(), fieldset);
 				}
 
 			}
@@ -101,7 +112,10 @@ public class FXConfigration {
 		System.out.println("------------------- FXInjections prepared -----------------");
 
 	}
-
+	/**
+	 * Scans all the given Packages and will prepare Injections 
+	 * and generates Services with Injections
+	 */
 	public static void apply() {
 		System.out.println(ASCIIART);
 		System.out.println("================================================================== Version 1.0");

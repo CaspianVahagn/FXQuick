@@ -16,7 +16,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 
-public abstract class FXView {
+/**
+ * 
+ * @author Dominik Leipelt
+ * 
+ * Simple View to Load FXML and to Switch views
+ * 
+ * overrwrite Init to apply Changes 
+ * 
+ * call loadFXML(url) to load a file and this Class will be the Controller of the FXML-file
+ * 
+ * call setNodeProperty or setParentProperty, to dock this view to a Parent to make
+ * Switching possible
+ * 
+ * call swichTo(View) to switch to a new view
+ */
+public abstract class FXView extends FXBase{
 
 	private FXMLLoader loader;
 
@@ -29,8 +44,9 @@ public abstract class FXView {
 	private ObjectProperty<Parent> parentProperty;
 
 	public FXView() {
+		super();
 		init();
-		loadInjections();
+		
 	}
 
 	public void loadFXML(String url) {
@@ -45,7 +61,11 @@ public abstract class FXView {
 		}
 
 	}
-
+	/**Switches to a new View and will dock the new View to the Parent or Parent Node of 
+	 * the current View 
+	 * If no Parentproperty or Nodeproperty is set, nothing will happen.
+	 * @param view
+	 */
 	public void switchTo(FXView view) {
 
 		if (parentProperty != null) {
@@ -60,32 +80,7 @@ public abstract class FXView {
 		}
 
 	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T inject(Class<T> clazz) {
-		return (T) ServiceManager.CLASSES.get(clazz);
-
-	}
-
-	private void loadInjections() {
-		if (ServiceManager.DEMANDED_FILED.containsKey(this.getClass())) {
-			for (Field f : ServiceManager.DEMANDED_FILED.get(this.getClass())) {
-				try {
-					f.setAccessible(true);
-
-					f.set(this, ServiceManager.CLASSES.get(f.getType()));
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-
-				}
-			}
-		}
-		
-
-	}
+	
 
 	public Node getRoot() {
 		return root;
