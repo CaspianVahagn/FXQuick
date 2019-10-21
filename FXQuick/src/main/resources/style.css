@@ -1,0 +1,21 @@
+.primary-button{
+	-fx-background-color: #cf4a04; 
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0;
+}
+
+.primary-button:hover{
+	-fx-background-color: #ed5405;
+}
+
+.primary-button:pressed{
+	-fx-background-color: #762a03;
+}
+.primary-font{
+	-fx-font-size: 14px;
+	-fx-font-weight:bold;
+	-fx-text-fill: white;	
+}
+.default-bg{
+	-fx-background-color: #4c4e58;
+}

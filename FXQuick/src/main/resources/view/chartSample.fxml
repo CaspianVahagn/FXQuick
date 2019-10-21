@@ -1,0 +1,49 @@
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import de.application.custom.IconButton?>
+<?import de.application.custom.IconLabel?>
+<?import javafx.scene.control.ScrollPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="chartStyle.css" styleClass="default-bg">
+
+	<top>
+		<IconButton icon="UPLOAD" iconColor="white" text="Upload" styleClass="primary-button,primary-font" />
+	</top>
+	<left>
+		<ScrollPane styleClass="default-bg">
+
+			<VBox fx:id="iconBox" styleClass="default-bg">
+			</VBox>
+		</ScrollPane>
+	</left>
+	<bottom>
+
+		<HBox minWidth="200">
+			<children>
+
+				<BarChart fx:id="barChart" title="Miau" prefWidth="900" minWidth="900" styleClass="chart">
+					<xAxis>
+						<CategoryAxis fx:id="yAxis" side="BOTTOM" label="JZ" />
+					</xAxis>
+					<yAxis>
+						<NumberAxis side="LEFT" fx:id="xAxis" label="Stunden" />
+					</yAxis>
+				</BarChart>
+				<IconButton icon="REPLY" iconColor="white" text="Upload" onAction="#backTo" styleClass="primary-button,primary-font" />
+			</children>
+			
+		</HBox>
+	</bottom>
+
+
+</BorderPane>

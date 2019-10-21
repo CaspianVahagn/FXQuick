@@ -1,0 +1,92 @@
+.chart {
+	-fx-background-color: #333333;
+	-fx-stroke: #3278fa;
+}
+
+.chart-plot-background {
+	-fx-background-color: transparent;
+}
+
+.default-color0.chart-bar {
+	-fx-bar-fill: rgba(0.0, 0.0, 0.0, 0.0);
+	-fx-background-color: linear-gradient(#defde0, rgba(222.0, 253.0, 224.0, 0.2));
+	-fx-border-color: #defde0;
+}
+
+.default-color1.chart-bar {
+	-fx-bar-fill: rgba(0.0, 0.0, 0.0, 0.0);
+	-fx-background-color: linear-gradient( #ffffba, rgba(252.0,247.0,222.0, 0.2));
+	-fx-border-color:  #ffffba;
+	
+}
+
+.default-color2.chart-bar {
+	-fx-bar-fill: #bae1ff;
+}
+
+.default-color3.chart-bar {
+	-fx-bar-fill: #bae1ff;
+}
+
+.default-color4.chart-bar {
+	-fx-bar-fill: #ffdfba;
+}
+
+.default-color5.chart-bar {
+	-fx-bar-fill: #860061;
+}
+
+.default-color6.chart-bar {
+	-fx-bar-fill: #c62b00;
+}
+
+.default-color7.chart-bar {
+	-fx-bar-fill: #ff5700;
+}
+
+.chart-legend {
+	-fx-background-color: #333333;
+	-fx-background-insets: 0.0, 1.0;
+	-fx-background-radius: 6.0, 5.0;
+	-fx-padding: 6.0px;
+}
+
+.chart-vertical-grid-lines {
+	-fx-stroke: rgba(255.0, 255.0, 255.0, 0.3);
+	-fx-stroke-dash-array: 1.0 0.0 1.0 0.0;
+}
+
+.chart-horizontal-grid-lines {
+	-fx-stroke: rgba(255.0, 255.0, 255.0, 0.3);
+	-fx-stroke-dash-array: 1.0 0.0 1.0 0.0;
+}
+
+.data0.chart-bar {
+	
+}
+
+.chart-legend-item {
+	-fx-text-fill: white;
+}
+
+.axis {
+	-fx-font-size: 1.4em;
+	-fx-tick-label-fill: #ffffba;
+	-fx-font-family: Tahoma;
+	-fx-tick-length: 20.0;
+	-fx-minor-tick-length: 10.0;
+}
+
+.default-color0.chart-area-symbol { -fx-background-color: #defde0, #defde0; }
+.default-color1.chart-area-symbol { -fx-background-color: #ffffba, #ffffba; }
+.default-color2.chart-area-symbol { -fx-background-color: #bae1ff, #bae1ff; }
+ 
+.default-color0.chart-series-area-line { -fx-stroke: #defde0; }
+.default-color1.chart-series-area-line { -fx-stroke: #ffffba; }
+.default-color2.chart-series-area-line { -fx-stroke: #bae1ff; }
+ 
+
+.default-color0.chart-series-area-fill { -fx-fill: linear-gradient(#defde0, rgba(222.0, 253.0, 224.0, 0.2));}
+.default-color1.chart-series-area-fill { -fx-fill: linear-gradient( #ffffba, rgba(252.0,247.0,222.0, 0.2)); }
+.default-color2.chart-series-area-fill { -fx-fill: linear-gradient( #bae1ff, rgba(252.0,247.0,222.0, 0.2)); }
+ 

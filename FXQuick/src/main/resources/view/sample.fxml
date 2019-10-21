@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import de.application.custom.*?>
+<?import de.application.custom.IconLabel?>
+<?import javafx.scene.control.ButtonBar?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg">
+
+	<top>
+		<IconLabel icon="instagram" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
+	</top>
+	<center>
+		<Text fx:id="HalloWelt" text="hallooo" styleClass="primary-font"></Text>
+	</center>
+	<bottom>
+		<HBox>
+			<children>
+				<ButtonBar>
+					<buttons>
+						<IconButton icon="ARROW_RIGHT" iconColor="white" text="click me" onAction="#basicAction"
+							styleClass="primary-button,primary-font" ButtonBar.buttonData="LEFT" />
+						<IconButton icon="UPLOAD" iconColor="white" text="Upload" styleClass="primary-button,primary-font" 
+						ButtonBar.buttonData="RIGHT"/>
+					</buttons>
+				</ButtonBar>
+			</children>
+		</HBox>
+	</bottom>
+
+
+</BorderPane>
