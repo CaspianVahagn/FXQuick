@@ -7,6 +7,6 @@ public class OtherService {
 
 	
 	public void test() {
-		System.out.println("ES KLAPPT");
+		System.out.println("It works");
 	}
 }
