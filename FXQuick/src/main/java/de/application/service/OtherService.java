@@ -1,6 +1,6 @@
 package de.application.service;
 
-import FXQuick.FXService;
+import fxQuick.FXService;
 
 @FXService
 public class OtherService {

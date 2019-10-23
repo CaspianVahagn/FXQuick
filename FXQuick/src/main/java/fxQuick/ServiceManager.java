@@ -1,4 +1,4 @@
-package FXQuick;
+package fxQuick;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

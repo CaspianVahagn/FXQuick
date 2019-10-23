@@ -19,7 +19,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg" stylesheets="chartStyle.css">
 
 	<top>
-		<Text fx:id="HalloWelt" text="Zweite view"></Text>
+		<Text fx:id="title" text="Zweite view"></Text>
 	</top>
 	<center>
 		<TabPane stylesheets="tabStyle.css">

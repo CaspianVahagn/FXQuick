@@ -1,7 +1,7 @@
 package de.application.service;
 
-import FXQuick.FXInject;
-import FXQuick.FXService;
+import fxQuick.FXInject;
+import fxQuick.FXService;
 
 @FXService
 public class SampleService {

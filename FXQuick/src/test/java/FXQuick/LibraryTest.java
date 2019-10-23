@@ -4,6 +4,9 @@
 package FXQuick;
 
 import org.junit.Test;
+
+import fxQuick.Library;
+
 import static org.junit.Assert.*;
 
 public class LibraryTest {

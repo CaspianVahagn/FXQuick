@@ -9,8 +9,9 @@ import java.util.concurrent.Executors;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 
-import FXQuick.FXInject;
-import FXQuick.ServiceManager;
+import de.application.exeptions.FXViewException;
+import fxQuick.FXInject;
+import fxQuick.ServiceManager;
 import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -82,6 +83,32 @@ public abstract class FXView extends FXBase{
 			setNodeProperty(null);
 		}
 
+	}
+	/**Dock a Parent or Node Property to the new View, to enable View switching.
+	 * <br>
+	 * example:
+	 * <code>
+	 * <br/>
+	 * FXView view = new ExampleVie();
+	 * <br/>
+	 * BorderPane bp = new BorderPane();
+	 * <br/>
+	 * view.dock(bp.centerProperty()); 
+	 *</code>
+	 * @param dockProperty
+	 * @throws FXViewException
+	 */
+	@SuppressWarnings("unchecked")
+	public void dock(ObjectProperty<?> dockProperty) throws FXViewException {
+		if(dockProperty.get() instanceof Parent) {
+			setParentProperty((ObjectProperty<Parent>) dockProperty);
+			this.getParentProperty().set((Parent) getRoot());
+		}else if(dockProperty.get() instanceof Node){
+			setNodeProperty((ObjectProperty<Node>) dockProperty);
+			this.nodeProperty.set(this.getRoot());
+		}else {
+			throw new FXViewException("Objectproperty<" + dockProperty.getValue().getClass().getSimpleName()+"> not supported - Use <Parent> or <Node>");
+		}
 	}
 	
 

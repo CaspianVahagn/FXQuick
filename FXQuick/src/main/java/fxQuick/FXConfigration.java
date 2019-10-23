@@ -1,4 +1,4 @@
-package FXQuick;
+package fxQuick;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -14,7 +14,7 @@ import org.reflections.scanners.FieldAnnotationsScanner;
 /**Configuration for Injection.
  * This Class will scan and prepare Injections for Given classes.
  * Each FXService will be a single Instance. 
- * @author Dominik Reset
+ * @author Dominik Leipelt
  *
  */
 public class FXConfigration {
@@ -27,13 +27,7 @@ public class FXConfigration {
 			+ "                                     __/ |                                  \r\n"
 			+ "                                    |___/                                   ";
 
-	public static final String version =
-			  "\t\t\t _   _               _               __   _____ \r\n"
-			+ "\t\t\t| | | |             (_)             /  | |  _  |\r\n"
-			+ "\t\t\t| | | | ___ _ __ ___ _  ___  _ __   `| | | |/' |\r\n"
-			+ "\t\t\t| | | |/ _ \\ '__/ __| |/ _ \\| '_ \\   | | |  /| |\r\n"
-			+ "\t\t\t\\ \\_/ /  __/ |  \\__ \\ | (_) | | | | _| |_\\ |_/ /\r\n"
-			+ "\t\t\t \\___/ \\___|_|  |___/_|\\___/|_| |_| \\___(_)___/";
+
 	private static String[] packageNames;
 	private static String[] potentialInjections;
 

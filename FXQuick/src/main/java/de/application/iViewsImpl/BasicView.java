@@ -3,8 +3,8 @@ package de.application.iViewsImpl;
 
 import java.io.IOException;
 
-import FXQuick.FXController;
 import de.application.iViews.FXView;
+import fxQuick.FXController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;

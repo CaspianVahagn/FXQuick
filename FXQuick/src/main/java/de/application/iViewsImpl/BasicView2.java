@@ -3,22 +3,25 @@ package de.application.iViewsImpl;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import FXQuick.FXController;
-import FXQuick.FXInject;
 import de.application.iViews.FXView;
 import de.application.service.SampleService;
-
+import fxQuick.FXController;
+import fxQuick.FXInject;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.text.Text;
 
 
 public class BasicView2 extends FXView {
 
 	@FXML
 	AreaChart<Integer, Integer> areaChart;
+	
+	@FXML
+	Text title;
 
 	@FXInject
 	SampleService sampleService;
@@ -59,31 +62,19 @@ public class BasicView2 extends FXView {
 		}
 		areaChart.getData().add(series2);
 
-		ExecutorService s = Executors.newSingleThreadExecutor();
 
-		s.execute(() -> {
-			int i = 13;
-			while (true) {
-				try {
-					Thread.sleep(2000);
-					int index = i;
-					Platform.runLater(() -> {
-						series2.getData().add(new XYChart.Data(index, (int) (Math.random() * 50)));
-						series.getData().add(new XYChart.Data(index, (int) (Math.random() * 50)));
-					});
-
-					i++;
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 
 	public void basicAction(ActionEvent e) {
 		sampleService.test();
-		switchTo(new ChartView());
+		async(()->{
+			Thread.sleep(3000);
+			return "hello " + Math.random(); 
+			
+		}).await(val ->{
+			title.setText(val);
+		});
+		//switchTo(new ChartView());
 	}
 
 }

@@ -1,4 +1,4 @@
-package FXQuick;
+package fxQuick;
 
 public @interface FXInject {
 
