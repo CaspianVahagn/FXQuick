@@ -1,4 +1,4 @@
-package de.application.iViewsImpl;
+package sample.application.iViewsImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,9 @@ import java.util.concurrent.Executors;
 
 import com.sun.javafx.charts.Legend;
 
-import de.application.custom.IconLabel;
-import de.application.iViews.FXView;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
+import fxQuick.iViews.FXView;
+import fxQuick.iconControl.IconLabel;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +22,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class ChartView extends FXView{
+public class SampleChartView extends FXView{
 	
 	@FXML
 	BarChart<String, Integer> barChart;
@@ -86,7 +86,7 @@ public class ChartView extends FXView{
 	}
 	
 	public void backTo(ActionEvent e) {
-		switchTo(new BasicView());
+		switchTo(new SampleBasicView());
 	}
 
 }

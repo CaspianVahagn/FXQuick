@@ -1,4 +1,4 @@
-package de.application.custom;
+package fxQuick.iconControl;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;

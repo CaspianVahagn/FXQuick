@@ -1,4 +1,4 @@
-package de.application.exeptions;
+package fxQuick.exeptions;
 
 public class FXViewException extends UnsupportedOperationException{
 

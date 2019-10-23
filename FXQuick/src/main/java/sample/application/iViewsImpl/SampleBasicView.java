@@ -1,17 +1,17 @@
-package de.application.iViewsImpl;
+package sample.application.iViewsImpl;
 
 
 import java.io.IOException;
 
-import de.application.iViews.FXView;
 import fxQuick.FXController;
+import fxQuick.iViews.FXView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 
-public class BasicView extends FXView{
+public class SampleBasicView extends FXView{
 	
 	@FXML
 	private Text HalloWelt;
@@ -22,7 +22,7 @@ public class BasicView extends FXView{
 	}
 	
 	public void basicAction(ActionEvent e) {
-		switchTo(new BasicView2());
+		switchTo(new SampleBasicView2());
 	}
 
 }

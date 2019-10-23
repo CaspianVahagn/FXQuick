@@ -1,4 +1,4 @@
-package de.application.iViews;
+package fxQuick.iViews;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -9,9 +9,9 @@ import java.util.concurrent.Executors;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 
-import de.application.exeptions.FXViewException;
 import fxQuick.FXInject;
 import fxQuick.ServiceManager;
+import fxQuick.exeptions.FXViewException;
 import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

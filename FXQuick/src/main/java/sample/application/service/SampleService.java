@@ -1,4 +1,4 @@
-package de.application.service;
+package sample.application.service;
 
 import fxQuick.FXInject;
 import fxQuick.FXService;

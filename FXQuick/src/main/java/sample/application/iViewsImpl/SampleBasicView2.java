@@ -1,21 +1,21 @@
-package de.application.iViewsImpl;
+package sample.application.iViewsImpl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import de.application.iViews.FXView;
-import de.application.service.SampleService;
 import fxQuick.FXController;
 import fxQuick.FXInject;
+import fxQuick.iViews.FXView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.text.Text;
+import sample.application.service.SampleService;
 
 
-public class BasicView2 extends FXView {
+public class SampleBasicView2 extends FXView {
 
 	@FXML
 	AreaChart<Integer, Integer> areaChart;

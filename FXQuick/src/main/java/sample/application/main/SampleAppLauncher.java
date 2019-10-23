@@ -1,4 +1,4 @@
-package de.application.main;
+package sample.application.main;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -9,14 +9,12 @@ import java.util.Set;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 
-import de.application.iViews.FXView;
-import de.application.iViewsImpl.BasicView;
-import de.application.service.SampleService;
 import fxQuick.FXConfigration;
 import fxQuick.FXController;
 import fxQuick.FXInject;
 import fxQuick.FXService;
 import fxQuick.ServiceManager;
+import fxQuick.iViews.FXView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -26,8 +24,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sample.application.iViewsImpl.SampleBasicView;
+import sample.application.service.SampleService;
 
-public class AppLauncher extends Application {
+public class SampleAppLauncher extends Application {
 
 	public final String INCONSOLATA_FONT = "https://fonts.googleapis.com/css?family=Inconsolata:400,700&display=swap";
 
@@ -37,7 +37,7 @@ public class AppLauncher extends Application {
 		FXConfigration.scanRuntimeInjections("de.application.iViewsImpl");
 		FXConfigration.apply();
 		
-		FXView view = new BasicView();
+		FXView view = new SampleBasicView();
 		Parent root = (Parent) view.getRoot();
 
 		Scene scene = new Scene(root, 1200, 900);
@@ -47,7 +47,7 @@ public class AppLauncher extends Application {
 		stage.setTitle("mainApp");
 		stage.setScene(scene);
 
-		stage.getIcons().add(new Image(AppLauncher.class.getClassLoader().getResourceAsStream("images/icon.png")));
+		stage.getIcons().add(new Image(SampleAppLauncher.class.getClassLoader().getResourceAsStream("images/icon.png")));
 
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
@@ -63,11 +63,6 @@ public class AppLauncher extends Application {
 
 	}
 
-	public static void main(String[] args) {
-		
 
-
-		launch(args);
-	}
 
 }
