@@ -14,13 +14,14 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
-<?import de.application.custom.*?>
-<?import de.application.custom.IconLabel?>
+
 <?import javafx.scene.control.ButtonBar?>
+<?import fxQuick.iconControl.IconLabel?>
+<?import fxQuick.iconControl.IconButton?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg">
 
 	<top>
-		<IconLabel icon="instagram" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
+		<IconLabel  icon="instagram" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
 	</top>
 	<center>
 		<Text fx:id="HalloWelt" text="hallooo" styleClass="primary-font"></Text>
@@ -30,7 +31,7 @@
 			<children>
 				<ButtonBar>
 					<buttons>
-						<IconButton icon="ARROW_RIGHT" iconColor="white" text="click me" onAction="#basicAction"
+						<IconButton  icon="ARROW_RIGHT" iconColor="white" text="click me" onAction="#basicAction"
 							styleClass="primary-button,primary-font" ButtonBar.buttonData="LEFT" />
 						<IconButton icon="UPLOAD" iconColor="white" text="Upload" styleClass="primary-button,primary-font" 
 						ButtonBar.buttonData="RIGHT"/>

@@ -71,7 +71,7 @@ public abstract class FXView extends FXBase{
 	 * @param view
 	 */
 	public void switchTo(FXView view) {
-
+		
 		if (parentProperty != null) {
 			parentProperty.set((Parent) view.root);
 			view.setParentProperty(this.parentProperty);
@@ -125,10 +125,12 @@ public abstract class FXView extends FXBase{
 	}
 
 	public void setNodeProperty(ObjectProperty<Node> nodeProperty) {
+		
 		this.nodeProperty = nodeProperty;
 	}
 
 	public ObjectProperty<Parent> getParentProperty() {
+		
 		return parentProperty;
 	}
 

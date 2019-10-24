@@ -30,8 +30,8 @@ public class SampleBasicView2 extends FXView {
 	public void init() {
 
 		loadFXML("view/samle2.fxml");
-
 		generateSampleData();
+		
 
 	}
 
@@ -66,6 +66,7 @@ public class SampleBasicView2 extends FXView {
 	}
 
 	public void basicAction(ActionEvent e) {
+		System.out.println(title.getParent());
 		sampleService.test();
 		async(()->{
 			Thread.sleep(3000);

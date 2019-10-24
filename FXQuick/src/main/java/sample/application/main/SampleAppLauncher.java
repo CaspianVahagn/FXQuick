@@ -33,14 +33,15 @@ public class SampleAppLauncher extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		FXConfigration.scanServices("de.application.service");
-		FXConfigration.scanRuntimeInjections("de.application.iViewsImpl");
+		FXConfigration.scanServices("sample.application.service");
+		FXConfigration.scanRuntimeInjections("sample.application.iViewsImpl");
 		FXConfigration.apply();
 		
 		FXView view = new SampleBasicView();
 		Parent root = (Parent) view.getRoot();
 
 		Scene scene = new Scene(root, 1200, 900);
+		
 		view.setParentProperty(scene.rootProperty());
 		scene.getStylesheets().add(INCONSOLATA_FONT);
 		scene.getStylesheets().add("style.css");
@@ -60,9 +61,13 @@ public class SampleAppLauncher extends Application {
 			}
 		});
 		stage.show();
+		
 
 	}
-
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 
 }

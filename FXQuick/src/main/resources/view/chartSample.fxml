@@ -11,13 +11,13 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import de.application.custom.IconButton?>
-<?import de.application.custom.IconLabel?>
+
 <?import javafx.scene.control.ScrollPane?>
+<?import fxQuick.iconControl.IconButton?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="chartStyle.css" styleClass="default-bg">
 
 	<top>
-		<IconButton icon="UPLOAD" iconColor="white" text="Upload" styleClass="primary-button,primary-font" />
+		<IconButton  icon="UPLOAD" iconColor="white" text="Upload" styleClass="primary-button,primary-font" />
 	</top>
 	<left>
 		<ScrollPane styleClass="default-bg">
