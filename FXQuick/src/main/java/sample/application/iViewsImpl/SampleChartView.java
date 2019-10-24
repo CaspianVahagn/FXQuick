@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.sun.javafx.charts.Legend;
+import com.sun.javafx.scene.control.skin.TabPaneSkin;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 import fxQuick.iViews.FXView;
@@ -53,6 +54,12 @@ public class SampleChartView extends FXView{
 					Platform.runLater(()->iconBox.getChildren().add(il));
 					
 				}
+			});
+			s.execute(()->{
+				while(this.getRoot().getParent() == null) {
+					
+				}
+				System.out.println(this.getRoot().getParent().getClass().getName());
 			});
 			
 		

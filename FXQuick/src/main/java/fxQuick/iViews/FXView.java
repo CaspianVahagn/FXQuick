@@ -16,6 +16,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 /**
  * 
@@ -71,17 +73,26 @@ public abstract class FXView extends FXBase{
 	 * @param view
 	 */
 	public void switchTo(FXView view) {
+		if(getRoot().getParent()!=null && !(getRoot().getParent() instanceof BorderPane) ) {
+			Pane p =(Pane) getRoot().getParent();
+			
+			p.getChildren().remove(getRoot());
+			p.getChildren().add(view.getRoot());
+			
+			
+		}else {
+			if (parentProperty != null) {
+				parentProperty.set((Parent) view.root);
+				view.setParentProperty(this.parentProperty);
+				setParentProperty(null);
+			}
+			if (nodeProperty != null) {
+				nodeProperty.set(view.root);
+				view.setNodeProperty(this.nodeProperty);
+				setNodeProperty(null);
+			}	
+		}
 		
-		if (parentProperty != null) {
-			parentProperty.set((Parent) view.root);
-			view.setParentProperty(this.parentProperty);
-			setParentProperty(null);
-		}
-		if (nodeProperty != null) {
-			nodeProperty.set(view.root);
-			view.setNodeProperty(this.nodeProperty);
-			setNodeProperty(null);
-		}
 
 	}
 	/**Dock a Parent or Node Property to the new View, to enable View switching.

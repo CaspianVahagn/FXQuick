@@ -11,6 +11,21 @@ public class ServiceManager {
 	
 	public final static Map<Class<?>,Set<Field>> DEMANDED_FIELDS = new HashMap<>();
 	
+	private static String[] packageQualifier;
+	
+	private static boolean isSet=false;
+
+	public static String[] getPackageQualifier() {
+		return packageQualifier;
+	}
+
+	public static void setPackageQualifier(String[] packageQualifier) {
+		if(!isSet) {
+			ServiceManager.packageQualifier = packageQualifier;
+		}
+		
+	}
+	
 	
  
 }

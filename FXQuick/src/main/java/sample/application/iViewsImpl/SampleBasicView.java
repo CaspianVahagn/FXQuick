@@ -2,6 +2,8 @@ package sample.application.iViewsImpl;
 
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import fxQuick.FXController;
 import fxQuick.iViews.FXView;
@@ -19,6 +21,8 @@ public class SampleBasicView extends FXView{
 	@Override
 	public void init() {
 			loadFXML("view/sample.fxml");
+			
+			
 	}
 	
 	public void basicAction(ActionEvent e) {

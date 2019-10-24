@@ -35,6 +35,7 @@ public class SampleAppLauncher extends Application {
 	public void start(Stage stage) throws Exception {
 		FXConfigration.scanServices("sample.application.service");
 		FXConfigration.scanRuntimeInjections("sample.application.iViewsImpl");
+		FXConfigration.addViewNameSpaces("sample.application.iViewsImpl");
 		FXConfigration.apply();
 		
 		FXView view = new SampleBasicView();

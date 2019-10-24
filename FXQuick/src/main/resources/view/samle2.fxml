@@ -29,7 +29,7 @@
 					<Button text="click me" alignment="bottom_center" onAction="#basicAction" styleClass="primary-button,primary-font" />
 				</Tab>
 				<Tab text="Page 2">
-					<AreaChart fx:id="areaChart" styleClass="chart" >
+					<AreaChart fx:id="areaChart" styleClass="chart">
 						<xAxis>
 							<NumberAxis fx:id="yAxis" side="BOTTOM" label="JZ" />
 						</xAxis>
@@ -38,8 +38,19 @@
 						</yAxis>
 					</AreaChart>
 				</Tab>
-				<Tab >
-					<IncludeView fxml="view/chartSample.fxml" />
+				<Tab>
+
+					<BorderPane>
+						<left>
+							<IncludeView viewName="SampleChartView" />
+						</left>
+						<center>
+							<IncludeView viewName="SampleBasicView" />
+						</center>
+
+					</BorderPane>
+
+
 				</Tab>
 
 			</tabs>

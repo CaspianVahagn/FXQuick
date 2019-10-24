@@ -75,7 +75,7 @@ public class SampleBasicView2 extends FXView {
 		}).await(val ->{
 			title.setText(val);
 		});
-		//switchTo(new ChartView());
+		switchTo(new SampleChartView());
 	}
 
 }

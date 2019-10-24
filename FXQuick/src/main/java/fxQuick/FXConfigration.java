@@ -30,7 +30,9 @@ public class FXConfigration {
 
 	private static String[] packageNames;
 	private static String[] potentialInjections;
-
+	private static String[] viewPackages;
+	
+ 
 	public static void scanServices(String... packageNames) {
 		FXConfigration.packageNames = packageNames;
 	}
@@ -42,6 +44,10 @@ public class FXConfigration {
 
 		FXConfigration.potentialInjections = packageNames;
 	}
+	public static void addViewNameSpaces(String... packageNames) {
+		FXConfigration.viewPackages = packageNames;
+	}
+	
 	/**
 	 * provide Packags with services to inject 
 	 * @param packageNames
@@ -121,7 +127,7 @@ public class FXConfigration {
 		System.out.println(ASCIIART);
 		System.out.println("================================================================== Version 1.0");
 		System.out.println();
-		long t = System.currentTimeMillis();
+		ServiceManager.setPackageQualifier(viewPackages);
 		applyScanServices(packageNames);
 		applyScanRuntimeInjections(potentialInjections);
 	}
