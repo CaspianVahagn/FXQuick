@@ -12,7 +12,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 public class FXPromise<T> {
-	private final static ExecutorService service = Executors.newFixedThreadPool(3);
+	private final static ExecutorService service = Executors.newFixedThreadPool(3, r -> {
+		Thread t = Executors.defaultThreadFactory().newThread(r);
+		t.setDaemon(true);
+		return t;
+	});
 
 	public interface FXPromiseCallback<T> {
 
@@ -31,7 +35,7 @@ public class FXPromise<T> {
 	 * 
 	 */
 	public FXPromise<T> async(Callable<T> fun) {
- 
+
 		service.execute(() -> {
 			try {
 				simpleObjectProperty.set(fun.call());

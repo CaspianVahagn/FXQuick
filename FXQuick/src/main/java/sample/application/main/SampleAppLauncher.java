@@ -46,7 +46,7 @@ public class SampleAppLauncher extends Application {
 		view.dock(scene.rootProperty());
 		scene.getStylesheets().add(INCONSOLATA_FONT);
 		scene.getStylesheets().add("style.css");
-		stage.setTitle("mainApp");
+		stage.setTitle("mainApp");  
 		stage.setScene(scene);
 
 		stage.getIcons().add(new Image(SampleAppLauncher.class.getClassLoader().getResourceAsStream("images/icon.png")));

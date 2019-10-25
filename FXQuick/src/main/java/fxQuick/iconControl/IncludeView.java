@@ -29,7 +29,11 @@ public class IncludeView extends AnchorPane {
 
 	public void setViewName(String viewName) {
 		this.viewName = viewName;
-		ExecutorService es = Executors.newSingleThreadExecutor();
+		ExecutorService es = Executors.newSingleThreadScheduledExecutor(r ->{
+			Thread t = Executors.defaultThreadFactory().newThread(r);
+			t.setDaemon(true);
+			return t;
+		});
 		es.execute(() -> {
 			while (this.getParent() == null) {
 
