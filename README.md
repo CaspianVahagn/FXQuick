@@ -59,7 +59,7 @@ public class OtherService {
 
 ## FXView 
 
-Allows you to generate a view by FXML. 
+An Interface that allows you to generate a view by FXML. 
 No need to declare a own Controller in the FXML anymore.
 
 ```java
@@ -84,13 +84,71 @@ public class SampleBasicView extends FXView{
 
 Allows you to switch views after Docking to Parent Property easily. With "switchTo(FXView)".
 
-Dock a Parent or Nodeproperty to the View to make Switching possible: 
+Initial Docking to a Parent or Nodeproperty to the View to make Switching possible: 
+>(this is only nessecary if your view is docked to the sceen as "entry point" to the Scengraph)
 
-```java
-	 FXView view = new ExampleView();
-	 BorderPane bp = new BorderPane();
-	 view.dock(bp.centerProperty()); 
-````
+```
+		FXView view = new SampleBasicView();
+		Parent root = (Parent) view.getRoot();
+
+		Scene scene = new Scene(root, 1200, 900);
+		
+		view.dock(scene.rootProperty());
+
+```
+Call *switchTo(FXView)* in the view for example via button click.
+
+```
+	public void basicAction(ActionEvent e) {
+		switchTo(new SampleBasicView2());
+	}
+
+```
+
+The same operation works with every other Parentelement for example BorderPane, TabPane, Hbox, Vbox etc without docking.
+
+### IncludeView via FXML:
+You don't need to declare Includes anymore with <fx:id include... />
+
+You can use:
+```xml
+
+<BorderPane>
+	<left>
+	   <IncludeView viewName="your.views.package.SampleChartView" />
+	</left>
+        <center>
+	     <IncludeView viewName="your.views.package.SampleBasicView" />
+	</center>
+</BorderPane>
+
+```
+You can also configure the Namespace for you viewPackages in the FXConfigurations on Applicationstart
+
+```
+FXConfigration.addViewNameSpaces("your.views.package.iViewsImpl","other.views.package");
+
+```
+now you don't have to use the whole qualified Name. 
+
+**NOTE:** 
+
+FXViews should have a unique Name to avoid problems with Package call.
+If the Names of views are ambiguous You MUST use the whole qualified Name.  
+
+
+```xml
+
+<BorderPane>
+	<left>
+	   <IncludeView viewName="SampleChartView" />
+	</left>
+        <center>
+	     <IncludeView viewName="SampleBasicView" />
+	</center>
+</BorderPane>
+
+```
 
 ### "async await"-like feature for Threadsafe calls outside of the UI Thread
 
@@ -124,5 +182,5 @@ public class SampleBasicView2 extends FXView {
 			title.setText(val);
 		});
 	}
-
+}
 ```
