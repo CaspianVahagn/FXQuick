@@ -74,5 +74,6 @@ public class IconLabel extends Label{
 
 	public void setGlyphStyleClass(String glyphStyleClass) {
 		this.glyphStyleClass = glyphStyleClass;
+		this.getGlyph().getStyleClass().add(glyphStyleClass);
 	}
 }
