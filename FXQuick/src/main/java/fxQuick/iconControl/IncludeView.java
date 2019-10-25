@@ -100,7 +100,7 @@ public class IncludeView extends AnchorPane {
 				FXView viewInstance = view;
 				if (view != null) {
 					Platform.runLater(() -> {
-						t.getChildren().clear();
+						t.getChildren().remove(this);
 						t.getChildren().add(viewInstance.getRoot());
 					});
 				} else {

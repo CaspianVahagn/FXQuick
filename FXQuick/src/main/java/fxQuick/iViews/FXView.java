@@ -75,9 +75,9 @@ public abstract class FXView extends FXBase{
 	public void switchTo(FXView view) {
 		if(getRoot().getParent()!=null && !(getRoot().getParent() instanceof BorderPane) ) {
 			Pane p =(Pane) getRoot().getParent();
-			
+			int index = p.getChildren().indexOf(getRoot());
 			p.getChildren().remove(getRoot());
-			p.getChildren().add(view.getRoot());
+			p.getChildren().add(index, view.getRoot());
 			
 			
 		}else {

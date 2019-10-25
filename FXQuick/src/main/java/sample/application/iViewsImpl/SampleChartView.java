@@ -58,7 +58,7 @@ public class SampleChartView extends FXView{
 			s.execute(()->{
 				while(this.getRoot().getParent() == null) {
 					
-				}
+				} 
 				System.out.println(this.getRoot().getParent().getClass().getName());
 			});
 			

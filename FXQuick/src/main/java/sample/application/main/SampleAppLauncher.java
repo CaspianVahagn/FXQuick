@@ -43,7 +43,7 @@ public class SampleAppLauncher extends Application {
 
 		Scene scene = new Scene(root, 1200, 900);
 		
-		view.setParentProperty(scene.rootProperty());
+		view.dock(scene.rootProperty());
 		scene.getStylesheets().add(INCONSOLATA_FONT);
 		scene.getStylesheets().add("style.css");
 		stage.setTitle("mainApp");
