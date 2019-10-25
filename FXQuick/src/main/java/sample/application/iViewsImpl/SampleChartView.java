@@ -80,8 +80,12 @@ public class SampleChartView extends FXView{
 		series2.getData().add(new XYChart.Data("Sonne", (int) (Math.random() * 700)));
 		series2.getData().add(new XYChart.Data("Regen", (int) (Math.random() * 1000)));
 		series2.getData().add(new XYChart.Data("Schnee/Hagel", (int) (Math.random() * 1000)));
-		
-		barChart.getData().addAll(series1, series2);
+		XYChart.Series<String, Integer> series3 = new XYChart.Series<String, Integer>();
+		series3.setName("Herbst" );
+		series3.getData().add(new XYChart.Data("Sonne", (int) (Math.random() * 700)));
+		series3.getData().add(new XYChart.Data("Regen", (int) (Math.random() * 1000)));
+		series3.getData().add(new XYChart.Data("Schnee/Hagel", (int) (Math.random() * 1000)));
+		barChart.getData().addAll(series1, series2,series3);
 //		for(Node n : barChart.getChildrenUnmodifiable()){
 //			   if(n instanceof Legend){
 //			      for(Legend.LegendItem legendItem : ((Legend)n).getItems()){

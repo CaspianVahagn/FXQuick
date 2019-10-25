@@ -125,7 +125,7 @@ public class FXConfigration {
 	 */
 	public static void apply() {
 		System.out.println(ASCIIART);
-		System.out.println("================================================================== Version 1.0");
+		System.out.println("================================================================== Version 1.1");
 		System.out.println();
 		ServiceManager.setPackageQualifier(viewPackages);
 		applyScanServices(packageNames);

@@ -20,6 +20,7 @@ public class IconButton extends Button {
 
 	private String icon;
 	private String iconColor;
+	private String glyphStyleClass;
 	private FontAwesomeIcon glyph = new FontAwesomeIcon();
 
 	public String getIcon() {
@@ -32,8 +33,13 @@ public class IconButton extends Button {
 
 			iconName = iconName.toUpperCase();
 
+			
+			if(iconColor!=null) {
+				glyph.setFill(Color.valueOf(iconColor));
+			}else {
+				glyph.setFill(Color.WHITE);
+			}
 			glyph.setIcon(FontAwesomeIcons.valueOf(iconName));
-			glyph.setFill(Color.WHITE);
 			this.setGraphic(glyph);
 		}
 
@@ -59,6 +65,14 @@ public class IconButton extends Button {
 
 	public String getIconColor() {
 		return iconColor;
+	}
+
+	public String getGlyphStyleClass() {
+		return glyphStyleClass;
+	}
+
+	public void setGlyphStyleClass(String glyphStyleClass) {
+		this.glyphStyleClass = glyphStyleClass;
 	}
 
 }

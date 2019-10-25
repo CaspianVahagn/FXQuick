@@ -8,40 +8,40 @@
 }
 
 .default-color0.chart-bar {
-	-fx-bar-fill: rgba(0.0, 0.0, 0.0, 0.0);
+	
 	-fx-background-color: linear-gradient(#defde0, rgba(222.0, 253.0, 224.0, 0.2));
 	-fx-border-color: #defde0;
 }
 
 .default-color1.chart-bar {
-	-fx-bar-fill: rgba(0.0, 0.0, 0.0, 0.0);
+	
 	-fx-background-color: linear-gradient( #ffffba, rgba(252.0,247.0,222.0, 0.2));
 	-fx-border-color:  #ffffba;
 	
 }
 
 .default-color2.chart-bar {
-	-fx-bar-fill: #bae1ff;
+	-fx-background-color: #bae1ff;
 }
 
 .default-color3.chart-bar {
-	-fx-bar-fill: #bae1ff;
+	-fx-background-color: #bae1ff;
 }
 
 .default-color4.chart-bar {
-	-fx-bar-fill: #ffdfba;
+	-fx-background-color: #ffdfba;
 }
 
 .default-color5.chart-bar {
-	-fx-bar-fill: #860061;
+	-fx-background-color: #860061;
 }
 
 .default-color6.chart-bar {
-	-fx-bar-fill: #c62b00;
+	-fx-background-color: #c62b00;
 }
 
 .default-color7.chart-bar {
-	-fx-bar-fill: #ff5700;
+	-fx-background-color: #ff5700;
 }
 
 .chart-legend {
@@ -70,7 +70,7 @@
 }
 
 .axis {
-	-fx-font-size: 1.4em;
+	-fx-font-size:  1.4em;
 	-fx-tick-label-fill: #ffffba;
 	-fx-font-family: Tahoma;
 	-fx-tick-length: 20.0;
