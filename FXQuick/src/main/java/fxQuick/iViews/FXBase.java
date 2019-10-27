@@ -43,6 +43,10 @@ public class FXBase {
 	 * @param fun :the callable function
 	 * @return returns a FXAsync object. call await() to work with called object when ready
 	 */
+	public <T> FXPromise<T> async(long timeout,Callable<T> fun) {
+		return new FXPromise<T>().async(timeout,fun);
+		
+	}
 	public <T> FXPromise<T> async(Callable<T> fun) {
 		return new FXPromise<T>().async(fun);
 		

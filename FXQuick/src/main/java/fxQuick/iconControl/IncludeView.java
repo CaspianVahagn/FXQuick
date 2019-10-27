@@ -22,10 +22,13 @@ import sample.application.iViewsImpl.SampleChartView;
 public class IncludeView extends AnchorPane {
 
 	private String viewName;
+	private String viewId;
+	
 
 	public String getViewName() {
 		return viewName;
 	}
+	
 
 	public void setViewName(String viewName) {
 		this.viewName = viewName;
@@ -38,7 +41,7 @@ public class IncludeView extends AnchorPane {
 			while (this.getParent() == null) {
 
 			}
-
+           
 			Pane t = (Pane) this.getParent();
 			if (t instanceof BorderPane) {
 				FXView view = null;
@@ -59,7 +62,12 @@ public class IncludeView extends AnchorPane {
 
 					}
 				}
+				
 				FXView viewInstance = view;
+				if(viewId != null) {
+					viewInstance.setViewId(viewId);
+					System.out.println(viewId);
+				}
 				Platform.runLater(() -> {
 					if (((BorderPane) t).leftProperty().get() != null &&((BorderPane) t).leftProperty().get().equals(this)) {
 						((BorderPane) t).leftProperty().set(viewInstance.getRoot());
@@ -103,6 +111,9 @@ public class IncludeView extends AnchorPane {
 				}
 				FXView viewInstance = view;
 				if (view != null) {
+					if(viewId != null) {
+						viewInstance.setViewId(viewId);
+					}
 					Platform.runLater(() -> {
 						t.getChildren().remove(this);
 						t.getChildren().add(viewInstance.getRoot());
@@ -121,6 +132,16 @@ public class IncludeView extends AnchorPane {
 			}
 		});
 
+	}
+
+	public String getViewId() {
+		return viewId;
+	}
+
+	public void setViewId(String viewId) {
+		System.out.println("SET " + viewId);
+	
+		this.viewId = viewId;
 	}
 
 }

@@ -23,22 +23,33 @@ import javafx.scene.layout.Pane;
  * 
  * @author Dominik Leipelt
  * 
- * Simple View to Load FXML and to Switch views
+ *         Simple View to Load FXML and to Switch views
  * 
- * overrwrite Init to apply Changes 
+ *         overrwrite Init to apply Changes
  * 
- * call loadFXML(url) to load a file and this Class will be the Controller of the FXML-file
+ *         call loadFXML(url) to load a file and this Class will be the
+ *         Controller of the FXML-file
  * 
- * call setNodeProperty or setParentProperty, to dock this view to a Parent to make
- * Switching possible
+ *         call setNodeProperty or setParentProperty, to dock this view to a
+ *         Parent to make Switching possible
  * 
- * call swichTo(View) to switch to a new view
+ *         call swichTo(View) to switch to a new view
  */
-public abstract class FXView extends FXBase{
+public abstract class FXView extends FXBase {
+
+	protected class Wrapper<T> {
+		public T value;
+
+		public Wrapper(T value) {
+			this.value = value;
+		}
+	}
 
 	private FXMLLoader loader;
 
 	private Node root;
+
+	private String viewId;
 
 	public abstract void init();
 
@@ -49,10 +60,13 @@ public abstract class FXView extends FXBase{
 	public FXView() {
 		super();
 		init();
-		
+
 	}
-	/**Loads a FXML file an sets this class to its controller
-	 * inject UI object with ids with @FXML 
+
+	/**
+	 * Loads a FXML file an sets this class to its controller inject UI object with
+	 * ids with @FXML
+	 * 
 	 * @param url
 	 */
 	public void loadFXML(String url) {
@@ -67,20 +81,23 @@ public abstract class FXView extends FXBase{
 		}
 
 	}
-	/**Switches to a new View and will dock the new View to the Parent or Parent Node of 
-	 * the current View 
-	 * If no Parentproperty or Nodeproperty is set, nothing will happen.
+
+	/**
+	 * Switches to a new View and will dock the new View to the Parent or Parent
+	 * Node of the current View If no Parentproperty or Nodeproperty is set, nothing
+	 * will happen.
+	 * 
 	 * @param view
 	 */
 	public void switchTo(FXView view) {
-		if(getRoot().getParent()!=null && !(getRoot().getParent() instanceof BorderPane) ) {
-			Pane p =(Pane) getRoot().getParent();
+		ServiceManager.viewIdMap.remove(viewId);
+		if (getRoot().getParent() != null && !(getRoot().getParent() instanceof BorderPane)) {
+			Pane p = (Pane) getRoot().getParent();
 			int index = p.getChildren().indexOf(getRoot());
 			p.getChildren().remove(getRoot());
 			p.getChildren().add(index, view.getRoot());
-			
-			
-		}else {
+
+		} else {
 			if (parentProperty != null) {
 				parentProperty.set((Parent) view.root);
 				view.setParentProperty(this.parentProperty);
@@ -90,15 +107,15 @@ public abstract class FXView extends FXBase{
 				nodeProperty.set(view.root);
 				view.setNodeProperty(this.nodeProperty);
 				setNodeProperty(null);
-			}	
+			}
 		}
-		
 
 	}
-	/**Dock a Parent or Node Property to the new View, to enable View switching.
+
+	/**
+	 * Dock a Parent or Node Property to the new View, to enable View switching.
 	 * <br>
-	 * example:
-	 * <code>
+	 * example: <code>
 	 * <br/>
 	 * FXView view = new ExampleVie();
 	 * <br/>
@@ -106,22 +123,23 @@ public abstract class FXView extends FXBase{
 	 * <br/>
 	 * view.dock(bp.centerProperty()); 
 	 *</code>
+	 * 
 	 * @param dockProperty
 	 * @throws FXViewException
 	 */
 	@SuppressWarnings("unchecked")
 	public void dock(ObjectProperty<?> dockProperty) throws FXViewException {
-		if(dockProperty.get() instanceof Parent) {
+		if (dockProperty.get() instanceof Parent) {
 			setParentProperty((ObjectProperty<Parent>) dockProperty);
 			this.getParentProperty().set((Parent) getRoot());
-		}else if(dockProperty.get() instanceof Node){
+		} else if (dockProperty.get() instanceof Node) {
 			setNodeProperty((ObjectProperty<Node>) dockProperty);
 			this.nodeProperty.set(this.getRoot());
-		}else {
-			throw new FXViewException("Objectproperty<" + dockProperty.getValue().getClass().getSimpleName()+"> not supported - Use <Parent> or <Node>");
+		} else {
+			throw new FXViewException("Objectproperty<" + dockProperty.getValue().getClass().getSimpleName()
+					+ "> not supported - Use <Parent> or <Node>");
 		}
 	}
-	
 
 	public Node getRoot() {
 		return root;
@@ -136,17 +154,41 @@ public abstract class FXView extends FXBase{
 	}
 
 	public void setNodeProperty(ObjectProperty<Node> nodeProperty) {
-		
+
 		this.nodeProperty = nodeProperty;
 	}
 
 	public ObjectProperty<Parent> getParentProperty() {
-		
+
 		return parentProperty;
 	}
 
 	public void setParentProperty(ObjectProperty<Parent> parentProperty) {
 		this.parentProperty = parentProperty;
+	}
+
+	public String getViewId() {
+		return viewId;
+	}
+
+	public void setViewId(String viewId) {
+		ServiceManager.viewIdMap.put(viewId, this);
+		this.viewId = viewId;
+	}
+
+	public FXView injectViewById(String id) {
+		while(!ServiceManager.viewIdMap.containsKey(id)) {
+			
+		}
+		if (ServiceManager.viewIdMap.containsKey(id)) {
+			
+			System.out.println("CALL");
+			return ServiceManager.viewIdMap.get(id);
+
+		}else {
+			System.out.println("CALL failed: " + id );
+		}
+		return null;
 	}
 
 }

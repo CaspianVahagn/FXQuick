@@ -42,10 +42,10 @@
 
 					<BorderPane>
 						<left>
-							<IncludeView viewName="SampleChartView" />
+							<IncludeView  viewId="holla" viewName="SampleChartView" />
 						</left>
 						<center>
-							<IncludeView viewName="SampleBasicView" />
+							<IncludeView viewId="other" viewName="SampleBasicView" />
 						</center>
 
 					</BorderPane>

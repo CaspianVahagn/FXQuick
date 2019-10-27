@@ -1,26 +1,17 @@
 package sample.application.iViewsImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.sun.javafx.charts.Legend;
-import com.sun.javafx.scene.control.skin.TabPaneSkin;
-
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 import fxQuick.iViews.FXView;
+import fxQuick.iconControl.IconButton;
 import fxQuick.iconControl.IconLabel;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class SampleChartView extends FXView{
@@ -29,6 +20,8 @@ public class SampleChartView extends FXView{
 	BarChart<String, Integer> barChart;
 	@FXML
 	VBox iconBox;
+	@FXML
+	IconButton miau;
 	
 	@Override
 	public void init() {
@@ -65,6 +58,7 @@ public class SampleChartView extends FXView{
 		
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void generateDummyData() {
 		XYChart.Series<String, Integer> series1 = new XYChart.Series<String, Integer>();
 		series1.setName("Sommer" );
@@ -86,18 +80,16 @@ public class SampleChartView extends FXView{
 		series3.getData().add(new XYChart.Data("Regen", (int) (Math.random() * 1000)));
 		series3.getData().add(new XYChart.Data("Schnee/Hagel", (int) (Math.random() * 1000)));
 		barChart.getData().addAll(series1, series2,series3);
-//		for(Node n : barChart.getChildrenUnmodifiable()){
-//			   if(n instanceof Legend){
-//			      for(Legend.LegendItem legendItem : ((Legend)n).getItems()){
-//			        System.out.println(legendItem);
-//			      }
-//			   }
-//			}
+
 		
 	}
 	
 	public void backTo(ActionEvent e) {
 		switchTo(new SampleBasicView());
+	}
+	
+	public void miaumal() {
+		miau.setText("Other view Attack");
 	}
 
 }
