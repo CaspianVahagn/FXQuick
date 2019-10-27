@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -18,11 +19,17 @@ public class FXPromise<T> {
 		t.setDaemon(true);
 		return t;
 	});
+	
+	SimpleObjectProperty<Exception> errorProperty = new SimpleObjectProperty<>(null);
 
 	public interface FXPromiseCallback<T> {
 
 		public void awaitExecution(T param);
 
+	}
+
+	public interface FXPromiseCallBackExept<T> {
+		public void awaitExecution(Exception err, T param);
 	}
 
 	SimpleObjectProperty<T> simpleObjectProperty = new SimpleObjectProperty<>(null);
@@ -50,20 +57,33 @@ public class FXPromise<T> {
 		return this;
 
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public FXPromise<T> async(long timeout, Callable<T> fun) {
 		
 		service.execute(() -> {
+			
 			Future<?> future = service.submit(fun);
 			try {
 				
 				
 				simpleObjectProperty.set((T)future.get(timeout, TimeUnit.MILLISECONDS));
-				System.out.println("DONE: " + Thread.currentThread().getName());
-			} catch (Exception e) {
+				
+			} catch (TimeoutException e) {
 				future.cancel(true);
-				System.out.println("CANCELED");
+				errorProperty.set(e);
+				
+			
+			} catch (InterruptedException e) {
+				future.cancel(true);
+				errorProperty.set(e);
+				
+				
+			} catch (ExecutionException e) {
+				future.cancel(true);
+				errorProperty.set(e);
+				
+				
 			}
 			
 		});
@@ -79,7 +99,7 @@ public class FXPromise<T> {
 	 * @param promise
 	 */
 	public void await(FXPromiseCallback<T> promise) {
-
+		
 		if (simpleObjectProperty.get() != null) {
 			promise.awaitExecution(simpleObjectProperty.get());
 		} else {
@@ -97,4 +117,41 @@ public class FXPromise<T> {
 			});
 		}
 	}
+
+	public void await(FXPromiseCallBackExept<T> promise) {
+		if(errorProperty.get()!= null) {
+			promise.awaitExecution(errorProperty.get(),null);
+		}else {
+			errorProperty.addListener(new ChangeListener<Exception>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Exception> observable,Exception oldValue, Exception newValue) {
+					Platform.runLater(() -> {
+						
+						promise.awaitExecution(newValue, null);
+
+					});
+
+				}
+			});
+		}
+		if (simpleObjectProperty.get() != null) {
+			
+			promise.awaitExecution(errorProperty.get(), simpleObjectProperty.get());
+		} else {
+			simpleObjectProperty.addListener(new ChangeListener<T>() {
+
+				@Override
+				public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+					Platform.runLater(() -> {
+						
+						promise.awaitExecution(errorProperty.get(), newValue);
+
+					});
+
+				}
+			});
+		}
+	}
+
 }

@@ -139,8 +139,7 @@ public class IncludeView extends AnchorPane {
 	}
 
 	public void setViewId(String viewId) {
-		System.out.println("SET " + viewId);
-	
+			
 		this.viewId = viewId;
 	}
 

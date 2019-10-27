@@ -3,6 +3,8 @@ package fxQuick.iViews;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -48,7 +50,7 @@ public abstract class FXView extends FXBase {
 	private FXMLLoader loader;
 
 	private Node root;
-
+	
 	private String viewId;
 
 	public abstract void init();
@@ -91,6 +93,8 @@ public abstract class FXView extends FXBase {
 	 */
 	public void switchTo(FXView view) {
 		ServiceManager.viewIdMap.remove(viewId);
+
+	
 		if (getRoot().getParent() != null && !(getRoot().getParent() instanceof BorderPane)) {
 			Pane p = (Pane) getRoot().getParent();
 			int index = p.getChildren().indexOf(getRoot());
@@ -171,22 +175,24 @@ public abstract class FXView extends FXBase {
 		return viewId;
 	}
 
+	/**
+	 * Makes FXView Injection possible for other views, by calling the id
+	 * 
+	 * @param viewId : the Id for the view
+	 */
 	public void setViewId(String viewId) {
 		ServiceManager.viewIdMap.put(viewId, this);
 		this.viewId = viewId;
 	}
 
 	public FXView injectViewById(String id) {
-		while(!ServiceManager.viewIdMap.containsKey(id)) {
-			
+		while (!ServiceManager.viewIdMap.containsKey(id)) {
+
 		}
 		if (ServiceManager.viewIdMap.containsKey(id)) {
 			
-			System.out.println("CALL");
 			return ServiceManager.viewIdMap.get(id);
 
-		}else {
-			System.out.println("CALL failed: " + id );
 		}
 		return null;
 	}

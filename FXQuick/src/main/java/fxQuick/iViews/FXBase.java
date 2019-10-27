@@ -37,9 +37,11 @@ public class FXBase {
 		
 
 	}
-	/**Runs a callable function asycronously.
+	/**Runs a callable function asycronously. 
+	 * Cancels if timeout time is reached 
 	 * 
 	 * @param <T> :object type
+	 * @param timeout : timeout in milliseconds
 	 * @param fun :the callable function
 	 * @return returns a FXAsync object. call await() to work with called object when ready
 	 */
@@ -47,6 +49,12 @@ public class FXBase {
 		return new FXPromise<T>().async(timeout,fun);
 		
 	}
+	/**Runs a callable function asycronously.
+	 * 
+	 * @param <T> :object type
+	 * @param fun :the callable function
+	 * @return returns a FXAsync object. call await() to work with called object when ready
+	 */
 	public <T> FXPromise<T> async(Callable<T> fun) {
 		return new FXPromise<T>().async(fun);
 		

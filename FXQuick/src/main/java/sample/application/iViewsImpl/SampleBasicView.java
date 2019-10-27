@@ -23,8 +23,16 @@ public class SampleBasicView extends FXView {
 		loadFXML("view/sample.fxml");
 		async(200,()->{
 			return (SampleChartView) injectViewById("holla");
-		}).await(view ->{ 
-			otherview = view;
+		}).await((err,view) ->{ 
+			if(err != null) {
+				System.out.println(err);
+				
+			}else {
+				otherview = view;
+			}
+			
+			
+			
 		});
 		
 
@@ -39,6 +47,7 @@ public class SampleBasicView extends FXView {
 		if (otherview != null) {
 			otherview.miaumal();
 		} else {
+			
 			switchTo(new SampleBasicView2());
 		}
 
