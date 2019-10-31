@@ -5,12 +5,14 @@ import java.util.concurrent.Executors;
 
 import fxQuick.FXController;
 import fxQuick.FXInject;
+import fxQuick.MatIcons;
 import fxQuick.iViews.FXView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import sample.application.service.SampleService;
 
@@ -62,19 +64,15 @@ public class SampleBasicView2 extends FXView {
 		}
 		areaChart.getData().add(series2);
 
-
+		title.setStyle("-fx-font-family:'Material Icons Outlined';-fx-font-size:12em;");
+		title.setText(MatIcons.SD_CARD.getUniCode());
+		title.setFill(Color.WHEAT);
 	}
 
 	public void basicAction(ActionEvent e) {
 		System.out.println(title.getParent());
 		sampleService.test();
-		async(()->{
-			Thread.sleep(3000);
-			return "hello " + Math.random(); 
-			
-		}).await(val ->{
-			title.setText(val);
-		});
+		
 		switchTo(new SampleChartView());
 	}
 

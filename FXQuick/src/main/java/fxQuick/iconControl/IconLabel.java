@@ -1,8 +1,10 @@
 package fxQuick.iconControl;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
+
+import fxQuick.MatIcons;
+import fxQuick.icon.Icon;
 import javafx.animation.FadeTransition;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -20,7 +22,7 @@ public class IconLabel extends Label{
 	private String icon;
 	private String iconColor;
 	private String glyphStyleClass;
-	private FontAwesomeIcon glyph = new FontAwesomeIcon();
+	private Icon glyph = new Icon();
 	public String getIcon() {
 		return icon;
 		
@@ -30,13 +32,13 @@ public class IconLabel extends Label{
 		this.icon = iconName;
 		if (iconName != null && iconName.length() > 1) {
 
-			iconName = iconName.toUpperCase(); 
+			
 			if(iconColor!=null) {
 				glyph.setFill(Color.valueOf(iconColor));
 			}else {
 				glyph.setFill(Color.WHITE);
 			}
-			glyph.setIcon(FontAwesomeIcons.valueOf(iconName));
+			glyph.setIconName(iconName);
 			
 			this.setGraphic(glyph);
 		}
@@ -54,7 +56,7 @@ public class IconLabel extends Label{
 		
 	}
 	
-	public FontAwesomeIcon getGlyph() {
+	public Icon getGlyph() {
 		return glyph;
 	}
 
@@ -76,4 +78,5 @@ public class IconLabel extends Label{
 		this.glyphStyleClass = glyphStyleClass;
 		this.getGlyph().getStyleClass().add(glyphStyleClass);
 	}
+
 }

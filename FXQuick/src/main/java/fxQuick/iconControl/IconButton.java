@@ -1,7 +1,7 @@
 package fxQuick.iconControl;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
+
+import fxQuick.icon.Icon;
 import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.scene.control.Button;
@@ -21,7 +21,7 @@ public class IconButton extends Button {
 	private String icon;
 	private String iconColor;
 	private String glyphStyleClass;
-	private FontAwesomeIcon glyph = new FontAwesomeIcon();
+	private Icon glyph = new Icon();
 
 	public String getIcon() {
 		return this.icon;
@@ -31,7 +31,7 @@ public class IconButton extends Button {
 		this.icon = iconName;
 		if (iconName != null && iconName.length() > 1) {
 
-			iconName = iconName.toUpperCase();
+			
 
 			
 			if(iconColor!=null) {
@@ -39,27 +39,18 @@ public class IconButton extends Button {
 			}else {
 				glyph.setFill(Color.WHITE);
 			}
-			glyph.setIcon(FontAwesomeIcons.valueOf(iconName));
+			glyph.setIconName(iconName);
 			this.setGraphic(glyph);
 		}
 
-//		FadeTransition transition = new FadeTransition(Duration.millis(100), this);
-//		transition.setFromValue(1);
-//		transition.setToValue(0);
-//		transition.setAutoReverse(true);
-//		transition.setCycleCount(2);
-//
-//		addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-//			System.out.println("schisdfhseuirz34897");
-//			transition.playFromStart();
-//		});
+
 	}
 
 	public void setIconColor(String c) {
 		glyph.setFill(Color.valueOf(c));
 
 	}
-	public FontAwesomeIcon getGlyph() {
+	public Icon getGlyph() {
 		return glyph;
 	}
 

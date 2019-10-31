@@ -1,9 +1,8 @@
 package sample.application.iViewsImpl;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
+
+import fxQuick.MatIcons;
 import fxQuick.iViews.FXView;
 import fxQuick.iconControl.IconButton;
 import fxQuick.iconControl.IconLabel;
@@ -28,13 +27,12 @@ public class SampleChartView extends FXView{
 		
 			loadFXML("view/chartSample.fxml");
 			generateDummyData();
-			ExecutorService s = Executors.newSingleThreadExecutor();
-			s.execute(()->{
-				
-				for(FontAwesomeIcons icon:FontAwesomeIcons.values()) {
+			async(()->{
+				System.out.println("IK LADE FONZS");
+				for(MatIcons icon:MatIcons.values()) {
 					IconLabel il = new IconLabel();
 					il.setText(icon.toString());
-					il.setIcon(icon.toString());
+					il.setIcon("ol:"+icon.toString());
 					il.minWidth(60);
 					il.getStyleClass().add("primary-font");
 					il.setIconColor("white");
@@ -47,13 +45,13 @@ public class SampleChartView extends FXView{
 					Platform.runLater(()->iconBox.getChildren().add(il));
 					
 				}
+				return 23;
+			}).await((i) ->{
+				System.out.println(i);
 			});
-			s.execute(()->{
-				while(this.getRoot().getParent() == null) {
-					
-				} 
-				System.out.println(this.getRoot().getParent().getClass().getName());
-			});
+		
+			
+			
 			
 		
 	}

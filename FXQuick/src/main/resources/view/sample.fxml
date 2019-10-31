@@ -21,7 +21,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg">
 
 	<top>
-		<IconLabel  icon="instagram" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
+		<IconLabel  icon="ol:ACCOUNT_BOX" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
 	</top>
 	<center>
 		<Text fx:id="HalloWelt" text="hallooo" styleClass="primary-font"></Text>
@@ -31,9 +31,9 @@
 			<children>
 				<ButtonBar>
 					<buttons>
-						<IconButton  icon="ARROW_RIGHT" iconColor="white" text="click me" onAction="#basicAction"
+						<IconButton  icon="CROP_ROTATE" iconColor="white" text="click me" onAction="#basicAction"
 							styleClass="primary-button,primary-font" ButtonBar.buttonData="LEFT" />
-						<IconButton icon="UPLOAD" iconColor="white" text="Upload" styleClass="primary-button,primary-font" 
+						<IconButton icon="ARROW_UPWARD" iconColor="white" text="Upload" styleClass="primary-button,primary-font" 
 						ButtonBar.buttonData="RIGHT"/>
 					</buttons>
 				</ButtonBar>

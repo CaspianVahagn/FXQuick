@@ -14,7 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 public class FXPromise<T> {
-	private final static ExecutorService service = Executors.newFixedThreadPool(256, r -> {
+	private  ExecutorService service = Executors.newSingleThreadExecutor( r -> {
 		Thread t = Executors.defaultThreadFactory().newThread(r);
 		t.setDaemon(true);
 		return t;
@@ -44,16 +44,17 @@ public class FXPromise<T> {
 	 */
 	public FXPromise<T> async(Callable<T> fun) {
 
-		service.execute(() -> {
+		Thread thread = new Thread(() -> {
 			try {
 				simpleObjectProperty.set(fun.call());
 			} catch (Exception e) {
 
 				e.printStackTrace();
 			}
-			System.out.println("DONE: " + Thread.currentThread().getName());
+			
 		});
-
+		thread.setDaemon(true);
+		thread.start();
 		return this;
 
 	}
@@ -61,33 +62,35 @@ public class FXPromise<T> {
 	@SuppressWarnings("unchecked")
 	public FXPromise<T> async(long timeout, Callable<T> fun) {
 		
-		service.execute(() -> {
+		Thread thread = new Thread(() -> {
 			
 			Future<?> future = service.submit(fun);
 			try {
 				
 				
 				simpleObjectProperty.set((T)future.get(timeout, TimeUnit.MILLISECONDS));
-				
+				service.shutdownNow();
 			} catch (TimeoutException e) {
 				future.cancel(true);
 				errorProperty.set(e);
-				
+				service.shutdownNow();
 			
 			} catch (InterruptedException e) {
 				future.cancel(true);
 				errorProperty.set(e);
-				
+				service.shutdownNow();
 				
 			} catch (ExecutionException e) {
 				future.cancel(true);
 				errorProperty.set(e);
 				
+				service.shutdownNow();
 				
 			}
 			
 		});
-
+		thread.setDaemon(true);
+		thread.start();
 		return this;
 
 	}
@@ -102,13 +105,14 @@ public class FXPromise<T> {
 		
 		if (simpleObjectProperty.get() != null) {
 			promise.awaitExecution(simpleObjectProperty.get());
+			service.shutdownNow();
 		} else {
 			simpleObjectProperty.addListener(new ChangeListener<T>() {
 
 				@Override
 				public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
 					Platform.runLater(() -> {
-
+						service.shutdownNow();
 						promise.awaitExecution(newValue);
 
 					});
@@ -119,15 +123,18 @@ public class FXPromise<T> {
 	}
 
 	public void await(FXPromiseCallBackExept<T> promise) {
+		
 		if(errorProperty.get()!= null) {
 			promise.awaitExecution(errorProperty.get(),null);
+			service.shutdownNow();
 		}else {
 			errorProperty.addListener(new ChangeListener<Exception>() {
 
 				@Override
 				public void changed(ObservableValue<? extends Exception> observable,Exception oldValue, Exception newValue) {
+					
 					Platform.runLater(() -> {
-						
+						service.shutdownNow();
 						promise.awaitExecution(newValue, null);
 
 					});
@@ -144,7 +151,7 @@ public class FXPromise<T> {
 				@Override
 				public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
 					Platform.runLater(() -> {
-						
+						service.shutdownNow();
 						promise.awaitExecution(errorProperty.get(), newValue);
 
 					});

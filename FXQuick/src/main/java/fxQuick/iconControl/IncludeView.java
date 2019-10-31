@@ -1,15 +1,17 @@
 package fxQuick.iconControl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.sun.javafx.scene.control.skin.TabPaneSkin;
+
 
 import fxQuick.ServiceManager;
 import fxQuick.iViews.FXView;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import sample.application.iViewsImpl.SampleChartView;
+
 
 public class IncludeView extends AnchorPane {
 
@@ -32,12 +35,8 @@ public class IncludeView extends AnchorPane {
 
 	public void setViewName(String viewName) {
 		this.viewName = viewName;
-		ExecutorService es = Executors.newSingleThreadScheduledExecutor(r ->{
-			Thread t = Executors.defaultThreadFactory().newThread(r);
-			t.setDaemon(true);
-			return t;
-		});
-		es.execute(() -> {
+		SimpleBooleanProperty done = new SimpleBooleanProperty(false);
+		Thread thread = new Thread(() -> {
 			while (this.getParent() == null) {
 
 			}
@@ -49,16 +48,16 @@ public class IncludeView extends AnchorPane {
 					for (String packageName : ServiceManager.getPackageQualifier()) {
 
 						try {
-							view = (FXView) (Class.forName(packageName + "." + viewName).newInstance());
-						} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+							view = (FXView) (Class.forName(packageName + "." + viewName).getDeclaredConstructor().newInstance());
+						} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 
 						}
 
 					}
 				} else {
 					try {
-						view = (FXView) (Class.forName(viewName).newInstance());
-					} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+						view = (FXView) (Class.forName(viewName).getDeclaredConstructor().newInstance());
+					} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 
 					}
 				}
@@ -129,8 +128,19 @@ public class IncludeView extends AnchorPane {
 						t.getChildren().add(l);
 					});
 				}
+				
+				
 			}
+			done.set(true);
 		});
+		thread.setDaemon(true);
+		
+		thread.start();
+		done.addListener((a,b,c)->{
+			System.out.println("DONE");
+			
+		});
+		
 
 	}
 
