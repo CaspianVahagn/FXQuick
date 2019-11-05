@@ -30,7 +30,16 @@ public class SampleBasicView extends FXView {
 	@Override
 	public void init(Props props) {
 		loadFXML("view/sample.fxml");
-		System.out.println("Props: " + props.get("bastard"));
+		async(200,()->{
+			Thread.sleep(1000);
+			return "hello";
+		}).await((err,p )->{
+			
+			System.out.println(err);
+			props.<Runnable>ifContains("fun", e -> e.run()).otherwise(()-> System.out.println("ERROR"));
+			System.out.println("Props: " + props.get("bastard"));
+		});
+		
 
 	}
 

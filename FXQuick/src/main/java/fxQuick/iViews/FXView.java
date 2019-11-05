@@ -26,6 +26,8 @@ import fxQuick.exeptions.FXViewException;
 import fxQuick.iconControl.IncludeView;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableMap;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -91,6 +93,15 @@ public abstract class FXView extends FXBase {
 	public void setState(String s, Object o) {
 		this.state.add(s, o);
 	}
+	
+	public void setState(String s, Runnable o) {
+		this.state.add(s, o);
+	}
+	
+	public void setState(String s, EventHandler<Event> o) {
+		this.state.add(s, o);
+	}
+	
 	
 	public abstract void init(Props props);
 
@@ -279,16 +290,6 @@ public abstract class FXView extends FXBase {
 		this.viewId = viewId;
 	}
 
-	public FXView injectViewById(String id) {
-		while (!ServiceManager.viewIdMap.containsKey(id)) {
 
-		}
-		if (ServiceManager.viewIdMap.containsKey(id)) {
-			
-			return ServiceManager.viewIdMap.get(id);
-
-		}
-		return null;
-	}
 
 }

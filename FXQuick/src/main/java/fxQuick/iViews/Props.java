@@ -7,6 +7,26 @@ public class Props {
      
 	private Map<String,Object> dic = new HashMap<String, Object>();
 	
+	public interface Handler<T>{
+		public void handle(T object);
+	}
+	
+	public class ElseHanlder {
+
+		private boolean isElse = false;
+		
+		public ElseHanlder(boolean isElse) {
+			this.isElse = isElse;
+		}
+		
+		public void otherwise(Runnable run) {
+			if(isElse) {
+				run.run();
+			}
+			
+		}
+	}
+	
 	private Props props;
 	
 	public void add(String key,Object value) {
@@ -33,6 +53,20 @@ public class Props {
 	public void setProps(Props props) {
 		dic = props.getDic();
 		this.props = props;
+	}
+	
+	public <T>ElseHanlder ifContains(String key,Handler<T> handler){
+		
+		T o = get(key);
+		if(o!=null) {
+			handler.handle(o);
+			return new ElseHanlder(false);
+		}else {
+			return new ElseHanlder(true);
+		}
+		
+		
+		
 	}
 	
 

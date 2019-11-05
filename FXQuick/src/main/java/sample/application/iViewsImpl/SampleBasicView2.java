@@ -32,6 +32,7 @@ public class SampleBasicView2 extends FXView {
 	@Override
 	public void init(Props props) {
 		setState("bastard", "Penis");
+		setState("fun", ()->System.out.println("hallo"));
 		loadFXML("view/samle2.fxml");
 		generateSampleData();
 		
