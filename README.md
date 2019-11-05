@@ -184,3 +184,54 @@ public class SampleBasicView2 extends FXView {
 	}
 }
 ```
+
+#### Async ErrorHandling 
+
+In the Likelyhood of an exception or error in a async Function you should also be able to Debug it.
+
+```java
+
+	public void basicAction(ActionEvent e) {
+		
+		async(()->{
+			Thread.sleep(3000);
+			int[] arr= {1,2,3};
+			//will throw array out of bounds exception
+			return "hello" + arr[7]; 
+			
+		}).await((err,val) ->{
+		
+			if(err != null){
+			   // handle error
+			}else{
+			   title.setText(val);
+			
+			}
+			
+		});
+	}
+}
+```
+
+You also have the Option for a async call with timeout in millisecond
+
+```java
+
+		async(2000,()->{
+			Thread.sleep(3000);
+			
+			//will throw timeoutException
+			return "hello"; 
+			
+		}).await((err,val) ->{
+			if(err != null){
+			   // handle error
+			}else{
+			   title.setText(val);
+			
+			}
+			
+		});
+
+
+```
