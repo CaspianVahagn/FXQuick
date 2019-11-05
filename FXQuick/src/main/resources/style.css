@@ -14,7 +14,8 @@
 .primary-font{
 	-fx-font-size: 14px;
 	-fx-font-weight:bold;
-	-fx-text-fill: white;	
+	-fx-text-fill: white;
+	-my-gap: 17;	
 }
 .default-bg{
 	-fx-background-color: #4c4e58;

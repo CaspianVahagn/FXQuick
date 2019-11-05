@@ -17,6 +17,9 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.AreaChart?>
 <?import fxQuick.iconControl.IncludeView?>
+<?import javafx.scene.control.ListView?>
+<?import java.lang.Object?>
+<?import fxQuick.iViews.Props?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg" stylesheets="chartStyle.css">
 
 	<top>
@@ -42,10 +45,14 @@
 
 					<BorderPane>
 						<left>
-							<IncludeView  viewId="holla" viewName="SampleChartView" />
+							<IncludeView viewName="SampleChartView" />
 						</left>
 						<center>
-							<IncludeView viewId="other" viewName="SampleBasicView" />
+							<IncludeView  viewName="SampleBasicView" >
+							
+								 
+
+							</IncludeView>
 						</center>
 
 					</BorderPane>

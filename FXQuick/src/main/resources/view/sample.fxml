@@ -24,7 +24,7 @@
 		<IconLabel  icon="ol:ACCOUNT_BOX" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
 	</top>
 	<center>
-		<Text fx:id="HalloWelt" text="hallooo" styleClass="primary-font"></Text>
+		<Text fx:id="HalloWelt" text="hallo" styleClass="primary-font"></Text>
 	</center>
 	<bottom>
 		<HBox>

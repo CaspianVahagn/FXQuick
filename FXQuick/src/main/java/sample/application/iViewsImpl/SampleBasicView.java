@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 
 import fxQuick.FXController;
 import fxQuick.iViews.FXView;
+import fxQuick.iViews.Props;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
@@ -18,38 +19,24 @@ public class SampleBasicView extends FXView {
 
 	private SampleChartView otherview;
 
+	public SampleBasicView() {
+		super();
+	}
+
+	public SampleBasicView(Props props) {
+		super(props);
+	}
+
 	@Override
-	public void init() {
+	public void init(Props props) {
 		loadFXML("view/sample.fxml");
-		async(200,()->{
-			return (SampleChartView) injectViewById("holla");
-		}).await((err,view) ->{ 
-			if(err != null) {
-				System.out.println(err);
-				
-			}else {
-				otherview = view;
-			}
-			
-			
-			
-		});
-		
+		System.out.println("Props: " + props.get("bastard"));
 
 	}
-	
-	
 
 	public void basicAction(ActionEvent e) {
 
-		
-		
-		if (otherview != null) {
-			otherview.miaumal();
-		} else {
-			
-			switchTo(new SampleBasicView2());
-		}
+		switchTo(new SampleBasicView2());
 
 	}
 

@@ -7,6 +7,7 @@ import fxQuick.FXController;
 import fxQuick.FXInject;
 import fxQuick.MatIcons;
 import fxQuick.iViews.FXView;
+import fxQuick.iViews.Props;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,8 +30,8 @@ public class SampleBasicView2 extends FXView {
 	SampleService sampleService;
 
 	@Override
-	public void init() {
-
+	public void init(Props props) {
+		setState("bastard", "Penis");
 		loadFXML("view/samle2.fxml");
 		generateSampleData();
 		
@@ -63,7 +64,7 @@ public class SampleBasicView2 extends FXView {
 			series2.getData().add(new XYChart.Data(i, (int) (Math.random() * 50)));
 		}
 		areaChart.getData().add(series2);
-
+		
 		title.setStyle("-fx-font-family:'Material Icons Outlined';-fx-font-size:12em;");
 		title.setText(MatIcons.SD_CARD.getUniCode());
 		title.setFill(Color.WHEAT);

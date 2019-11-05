@@ -4,6 +4,7 @@ package sample.application.iViewsImpl;
 
 import fxQuick.MatIcons;
 import fxQuick.iViews.FXView;
+import fxQuick.iViews.Props;
 import fxQuick.iconControl.IconButton;
 import fxQuick.iconControl.IconLabel;
 import javafx.application.Platform;
@@ -22,13 +23,21 @@ public class SampleChartView extends FXView{
 	@FXML
 	IconButton miau;
 	
+	public SampleChartView() {
+		super();
+	}
+	
+	public SampleChartView(Props props) {
+		super(props);
+	}
+	
 	@Override
-	public void init() {
+	public void init(Props props) {
 		
 			loadFXML("view/chartSample.fxml");
 			generateDummyData();
 			async(()->{
-				System.out.println("IK LADE FONZS");
+				
 				for(MatIcons icon:MatIcons.values()) {
 					IconLabel il = new IconLabel();
 					il.setText(icon.toString());
@@ -51,7 +60,7 @@ public class SampleChartView extends FXView{
 			});
 		
 			
-			
+			miau.setText(props.get("bastard"));
 			
 		
 	}
