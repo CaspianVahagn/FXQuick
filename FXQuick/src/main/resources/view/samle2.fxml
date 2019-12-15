@@ -48,9 +48,9 @@
 							<IncludeView viewName="SampleChartView" />
 						</left>
 						<center>
-							<IncludeView  viewName="SampleBasicView" >
-							
-								 
+							<IncludeView viewName="SampleBasicView">
+								
+
 
 							</IncludeView>
 						</center>

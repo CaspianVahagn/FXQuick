@@ -28,7 +28,7 @@ public class IncludeView extends AnchorPane {
 
 	private String viewName;
 	private String viewId;
-	
+
 	
     
 	
@@ -147,6 +147,9 @@ public class IncludeView extends AnchorPane {
 			
 		this.viewId = viewId;
 	}
+
+
+
 
 
 

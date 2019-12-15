@@ -137,7 +137,7 @@ public abstract class FXView extends FXBase {
 //		Map<String, Object> ns = getNameSpace();
 //		
 //		ns.put("props", state);		
-		
+		if(loader.getController()!=null) loader.setController(null);
 		loader.setController(this);
 		try {
 			setRoot(loader.load());
