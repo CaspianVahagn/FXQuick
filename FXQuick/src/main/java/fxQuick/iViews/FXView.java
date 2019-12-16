@@ -21,6 +21,7 @@ import org.reflections.scanners.FieldAnnotationsScanner;
 
 
 import fxQuick.FXInject;
+import fxQuick.QuickFxmlLoader;
 import fxQuick.ServiceManager;
 import fxQuick.exeptions.FXViewException;
 import fxQuick.iconControl.IncludeView;
@@ -62,7 +63,7 @@ public abstract class FXView extends FXBase {
 		}
 	}
 
-	private FXMLLoader loader;
+	private QuickFxmlLoader loader;
 
 	private Node root;
 	
@@ -113,7 +114,7 @@ public abstract class FXView extends FXBase {
 	 */
 	public void loadFXML(String url) {
 		URL val = FXView.class.getClassLoader().getResource(url);
-		loader = new FXMLLoader(val);
+		loader = new QuickFxmlLoader(val);
 		boolean lookup = false;
 		try {
 			InputStream is = FXView.class.getClassLoader().getResourceAsStream(url);
