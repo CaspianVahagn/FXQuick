@@ -2,23 +2,13 @@ package fxQuick.iViews;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.Field;
+
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import org.reflections.Reflections;
-import org.reflections.scanners.FieldAnnotationsScanner;
 
-import fxQuick.FXInject;
 
 import fxQuick.ServiceManager;
 import fxQuick.exeptions.FXViewException;
@@ -34,7 +24,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import sun.reflect.misc.ReflectUtil;
+
 
 /**
  * 
