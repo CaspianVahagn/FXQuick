@@ -18,10 +18,8 @@ import java.util.concurrent.Executors;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 
-
-
 import fxQuick.FXInject;
-import fxQuick.QuickFxmlLoader;
+
 import fxQuick.ServiceManager;
 import fxQuick.exeptions.FXViewException;
 import fxQuick.iconControl.IncludeView;
@@ -36,6 +34,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import sun.reflect.misc.ReflectUtil;
 
 /**
  * 
@@ -63,47 +62,42 @@ public abstract class FXView extends FXBase {
 		}
 	}
 
-	private QuickFxmlLoader loader;
+	private FXMLLoader loader;
 
 	private Node root;
-	
-	private String viewId;
 
-	
+	private String viewId;
 
 	private ObjectProperty<Node> nodeProperty;
 
 	private ObjectProperty<Parent> parentProperty;
-	
+
 	private final Props state = new Props();
 
-	
 	public FXView() {
 		super();
 		init(new Props());
 
 	}
-	
+
 	public FXView(Props props) {
 		super();
 		init(props);
-		
 
 	}
-	
+
 	public void setState(String s, Object o) {
 		this.state.add(s, o);
 	}
-	
+
 	public void setState(String s, Runnable o) {
 		this.state.add(s, o);
 	}
-	
+
 	public void setState(String s, EventHandler<Event> o) {
 		this.state.add(s, o);
 	}
-	
-	
+
 	public abstract void init(Props props);
 
 	/**
@@ -114,21 +108,21 @@ public abstract class FXView extends FXBase {
 	 */
 	public void loadFXML(String url) {
 		URL val = FXView.class.getClassLoader().getResource(url);
-		loader = new QuickFxmlLoader(val);
+		loader = new FXMLLoader(val);
 		boolean lookup = false;
 		try {
 			InputStream is = FXView.class.getClassLoader().getResourceAsStream(url);
 			byte[] buffer = new byte[2024];
-		    StringBuilder stringBuilder = new StringBuilder();
-		    int length = 0;
+			StringBuilder stringBuilder = new StringBuilder();
+			int length = 0;
 
-		    while ((length = is.read(buffer)) >= 0) {
-		        stringBuilder.append(new String(Arrays.copyOfRange(buffer, 0, length), "UTF-8"));
-		    }
+			while ((length = is.read(buffer)) >= 0) {
+				stringBuilder.append(new String(Arrays.copyOfRange(buffer, 0, length), "UTF-8"));
+			}
 
-		    String contents = stringBuilder.toString();
-			
-			if(contents.contains("IncludeView")) {
+			String contents = stringBuilder.toString();
+
+			if (contents.contains("IncludeView")) {
 				lookup = true;
 			}
 		} catch (IOException e1) {
@@ -138,52 +132,54 @@ public abstract class FXView extends FXBase {
 //		Map<String, Object> ns = getNameSpace();
 //		
 //		ns.put("props", state);		
-		
-		loader.setStoredController(this);
+
+		loader.setControllerFactory(o -> {
+
+			return this;
+
+		});
 		try {
 			setRoot(loader.load());
-			if(lookup) {
+			if (lookup) {
 				System.out.println("Check for includes");
-				for(IncludeView inc: getAllNodes((Parent) root)) {
+				for (IncludeView inc : getAllNodes((Parent) root)) {
 					inc.invokeInclude(state);
-					
+
 				}
 			}
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	public static ArrayList<IncludeView> getAllNodes(Parent root) {
-	    ArrayList<IncludeView> nodes = new ArrayList<IncludeView>();
-	    addAllDescendents(root, nodes);
-	    return nodes;
+		ArrayList<IncludeView> nodes = new ArrayList<IncludeView>();
+		addAllDescendents(root, nodes);
+		return nodes;
 	}
 
 	private static void addAllDescendents(Parent parent, ArrayList<IncludeView> nodes) {
-	    for (Node node : parent.getChildrenUnmodifiable()) {
-	    	
-	    	if(node instanceof IncludeView) {
-	    		nodes.add((IncludeView) node);
-	    	}
-	    	if(node instanceof TabPane) {
-	    		TabPane p = (TabPane) node;
-	    	
-	    		
-	    		for (Tab tnode : p.getTabs()) {
-	    			
-	    			
-	    			 if (tnode.getContent() instanceof Parent)
-	    		            addAllDescendents((Parent)tnode.getContent(), nodes);
-	    			
-	    		}
-	    	}
-	        if (node instanceof Parent)
-	            addAllDescendents((Parent)node, nodes);
-	    }
+		for (Node node : parent.getChildrenUnmodifiable()) {
+
+			if (node instanceof IncludeView) {
+				nodes.add((IncludeView) node);
+			}
+			if (node instanceof TabPane) {
+				TabPane p = (TabPane) node;
+
+				for (Tab tnode : p.getTabs()) {
+
+					if (tnode.getContent() instanceof Parent)
+						addAllDescendents((Parent) tnode.getContent(), nodes);
+
+				}
+			}
+			if (node instanceof Parent)
+				addAllDescendents((Parent) node, nodes);
+		}
 	}
 
 	/**
@@ -196,7 +192,6 @@ public abstract class FXView extends FXBase {
 	public void switchTo(FXView view) {
 		ServiceManager.viewIdMap.remove(viewId);
 
-	
 		if (getRoot().getParent() != null && !(getRoot().getParent() instanceof BorderPane)) {
 			Pane p = (Pane) getRoot().getParent();
 			int index = p.getChildren().indexOf(getRoot());
@@ -217,8 +212,8 @@ public abstract class FXView extends FXBase {
 		}
 
 	}
-	
-	public ObservableMap<String,Object> getNameSpace(){
+
+	public ObservableMap<String, Object> getNameSpace() {
 		return loader.getNamespace();
 	}
 
@@ -290,7 +285,5 @@ public abstract class FXView extends FXBase {
 		ServiceManager.viewIdMap.put(viewId, this);
 		this.viewId = viewId;
 	}
-
-
 
 }
