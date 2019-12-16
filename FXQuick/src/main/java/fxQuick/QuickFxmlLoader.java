@@ -19,7 +19,10 @@ public class QuickFxmlLoader extends FXMLLoader {
 
 	@Override
 	public void setController(Object controller) {
+		System.out.println("Contr:" + controller);
 		if (controllerStored != null) {
+			super.setController(null);
+			
 			super.setController(controllerStored);
 		} else {
 			super.setController(controller);

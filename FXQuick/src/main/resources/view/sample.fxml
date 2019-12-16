@@ -18,7 +18,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import fxQuick.iconControl.IconLabel?>
 <?import fxQuick.iconControl.IconButton?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg">
+<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg" fx:controller="sample.application.iViewsImpl.SampleBasicView">
 
 	<top>
 		<IconLabel  icon="ol:ACCOUNT_BOX" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>

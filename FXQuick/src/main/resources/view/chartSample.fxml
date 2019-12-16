@@ -14,7 +14,7 @@
 
 <?import javafx.scene.control.ScrollPane?>
 <?import fxQuick.iconControl.IconButton?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="chartStyle.css" styleClass="default-bg">
+<BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="chartStyle.css" styleClass="default-bg" fx:controller="sample.application.iViewsImpl.SampleChartView">
 
 	<top>
 		<IconButton fx:id="miau" icon="DOCK" iconColor="white" text="Upload" styleClass="primary-button,primary-font" />
