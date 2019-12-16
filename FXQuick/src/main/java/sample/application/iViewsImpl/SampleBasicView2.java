@@ -35,7 +35,7 @@ public class SampleBasicView2 extends FXView {
 		setState("fun", ()->System.out.println("hallo"));
 		loadFXML("view/samle2.fxml");
 		generateSampleData();
-		
+
 
 	}
 
