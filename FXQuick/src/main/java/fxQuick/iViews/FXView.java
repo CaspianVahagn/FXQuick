@@ -110,6 +110,7 @@ public abstract class FXView extends FXBase {
 		URL val = FXView.class.getClassLoader().getResource(url);
 		loader = new FXMLLoader(val);
 		boolean lookup = false;
+		boolean fxController =false;
 		try {
 			InputStream is = FXView.class.getClassLoader().getResourceAsStream(url);
 			byte[] buffer = new byte[2024];
@@ -121,7 +122,7 @@ public abstract class FXView extends FXBase {
 			}
 
 			String contents = stringBuilder.toString();
-
+			if(contents.contains("fx:controller=")) fxController = true;
 			if (contents.contains("IncludeView")) {
 				lookup = true;
 			}
@@ -132,12 +133,14 @@ public abstract class FXView extends FXBase {
 //		Map<String, Object> ns = getNameSpace();
 //		
 //		ns.put("props", state);		
-
-		loader.setControllerFactory(o -> {
-
-			return this;
-
-		});
+		if(fxController) {
+			loader.setControllerFactory(o -> {
+				return this;
+			});
+		}else {
+			loader.setController(this);
+		}
+		
 		try {
 			setRoot(loader.load());
 			if (lookup) {
