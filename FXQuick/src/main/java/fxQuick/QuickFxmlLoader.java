@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.net.URL;
 
 import javafx.fxml.FXMLLoader;
+import sun.reflect.misc.ReflectUtil;
 
 public class QuickFxmlLoader extends FXMLLoader {
 
 	private Object controllerStored;
+	
+	
 
 	public void setStoredController(Object controller) {
 		this.controllerStored = controller;
@@ -15,18 +18,22 @@ public class QuickFxmlLoader extends FXMLLoader {
 
 	public QuickFxmlLoader(URL val) {
 		super(val);
-	}
-
-	@Override
-	public void setController(Object controller) {
-		System.out.println("Contr:" + controller);
-		if (controllerStored != null) {
-			super.setController(null);
+		setControllerFactory(o ->{
+			if(controllerStored != null)
+			return controllerStored;
+			ReflectUtil.checkPackageAccess(o);
 			
-			super.setController(controllerStored);
-		} else {
-			super.setController(controller);
-		}
+			try {
+				return  o.newInstance();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		});
 	}
 
 }
