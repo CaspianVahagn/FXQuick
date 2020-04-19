@@ -1,22 +1,25 @@
-.primary-button{
-	-fx-background-color: #cf4a04; 
-    -fx-border-radius: 0px;
+.primary-button {
+    -fx-background-color: orange;
+    -fx-border-radius: 12px;
     -fx-background-radius: 0;
 }
 
-.primary-button:hover{
-	-fx-background-color: #ed5405;
+.primary-button:hover {
+      -fx-background-color: #0B5AC8;
+
 }
 
-.primary-button:pressed{
-	-fx-background-color: #762a03;
+.primary-button:pressed {
+    -fx-background-color: #762a03;
 }
-.primary-font{
-	-fx-font-size: 14px;
-	-fx-font-weight:bold;
-	-fx-text-fill: white;
-	-my-gap: 17;	
+
+.primary-font {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -my-gap: 17;
 }
-.default-bg{
-	-fx-background-color: #4c4e58;
+
+.default-bg {
+    -fx-background-color: #4c4e58;
 }

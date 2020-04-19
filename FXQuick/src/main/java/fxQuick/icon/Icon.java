@@ -5,91 +5,91 @@ import fxQuick.MatIcons;
 import javafx.scene.text.Text;
 
 public class Icon extends Text {
-	
-	public static final String REGULAR = "Material Icons";
-	public static final String OUTLINED = "Material Icons Outlined";
-	private double size = 2;
-	private String iconType = REGULAR;
-	
-	private String iconName = "";
-	private String unit = "em";
 
-	public Icon() {
-		super();
-		if (!FontInitializer.isInitalized()) {
-			FontInitializer.init();
-		}
-		applyStyle();
-	}
+    public static final String REGULAR = "Material Icons";
+    public static final String OUTLINED = "Material Icons Outlined";
+    private double size = 2;
+    private String iconType = REGULAR;
 
-	public Icon(String iconName) {
-		this();
-		setIconName(iconName);
-		applyStyle();
-	}
+    private String iconName = "";
+    private String unit = "em";
 
-	public Icon(String iconName, double size, String unit) {
-		this();
-		setIconName(iconName);
-		this.unit = unit;
-		this.size = size;
-		applyStyle();
-	}
+    public Icon() {
+        super();
+        if (!FontInitializer.isInitalized()) {
+            FontInitializer.init();
+        }
+        applyStyle();
+    }
 
-	private void applyStyle() {
-		String style = String.format("-fx-font-family: '%s'; -fx-font-size: %s;", iconType, size + unit);
-		
-		this.setStyle(style);
-	}
+    public Icon(String iconName) {
+        this();
+        setIconName(iconName);
+        applyStyle();
+    }
 
-	public double getSize() {
-		return size;
-	}
+    public Icon(String iconName, double size, String unit) {
+        this();
+        setIconName(iconName);
+        this.unit = unit;
+        this.size = size;
+        applyStyle();
+    }
 
-	public void setSize(double size) {
-		this.size = size;
-	}
+    private void applyStyle() {
+        String style = String.format("-fx-font-family: '%s'; -fx-font-size: %s;", iconType, size + unit);
 
-	public String getIconType() {
-		return iconType;
-	}
+        this.setStyle(style);
+    }
 
-	public void setIconType(String iconType) {
+    public double getSize() {
+        return size;
+    }
 
-		this.iconType = iconType;
-		applyStyle();
-	}
+    public void setSize(double size) {
+        this.size = size;
+    }
 
-	public String getIconName() {
-		return iconName;
+    public String getIconType() {
+        return iconType;
+    }
 
-	}
+    public void setIconType(String iconType) {
 
-	public void setIconName(String name) {
-		
-		if(name.contains("ol:")) {
-			setIconType(OUTLINED);
-			name = name.split(":")[1];
-		
-		}
-		
-		this.iconName = MatIcons.valueOf(name.toUpperCase()).getUniCode();
-		setText(this.iconName);
-		applyStyle();
-	}
+        this.iconType = iconType;
+        applyStyle();
+    }
 
-	public String getUnit() {
-		return unit;
-	}
+    public String getIconName() {
+        return iconName;
 
-	public void setUnit(String unit) {
-		this.unit = unit;
-		applyStyle();
-	}
+    }
 
-	public void addStyle(String style) {
-		String myStyle = String.format("-fx-font-family: '%s'; -fx-font-size: %s;", iconType, size + unit);
-		this.setStyle(myStyle + style);
-	}
+    public void setIconName(String name) {
+
+        if (name.contains("ol:")) {
+            setIconType(OUTLINED);
+            name = name.split(":")[1];
+
+        }
+
+        this.iconName = MatIcons.valueOf(name.toUpperCase()).getUniCode();
+        setText(this.iconName);
+        applyStyle();
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+        applyStyle();
+    }
+
+    public void addStyle(String style) {
+        String myStyle = String.format("-fx-font-family: '%s'; -fx-font-size: %s;", iconType, size + unit);
+        this.setStyle(myStyle + style);
+    }
 
 }

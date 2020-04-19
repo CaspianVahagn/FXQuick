@@ -1,45 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-
-<?import javafx.scene.control.ButtonBar?>
-<?import fxQuick.iconControl.IconLabel?>
 <?import fxQuick.iconControl.IconButton?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg" fx:controller="sample.application.iViewsImpl.SampleBasicView">
+<?import fxQuick.iconControl.IconLabel?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg"
+            fx:controller="sample.application.iViewsImpl.SampleBasicView">
 
-	<top>
-		<IconLabel  icon="ol:ACCOUNT_BOX" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
-	</top>
-	<center>
-		<Text fx:id="HalloWelt" text="hallo" styleClass="primary-font"></Text>
-	</center>
-	<bottom>
-		<HBox>
-			<children>
-				<ButtonBar>
-					<buttons>
-						<IconButton  icon="CROP_ROTATE" iconColor="white" text="click me" onAction="#basicAction"
-							styleClass="primary-button,primary-font" ButtonBar.buttonData="LEFT" />
-						<IconButton icon="ARROW_UPWARD" iconColor="white" text="Upload" styleClass="primary-button,primary-font" 
-						ButtonBar.buttonData="RIGHT"/>
-					</buttons>
-				</ButtonBar>
-			</children>
-		</HBox>
-	</bottom>
-
-
+    <top>
+        <IconLabel icon="ol:ACCOUNT_BOX" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
+    </top>
+    <center>
+        <Text fx:id="HalloWelt" text="hallo" styleClass="primary-font"></Text>
+    </center>
+    <bottom>
+        <HBox>
+            <children>
+                <ButtonBar>
+                    <buttons>
+                        <Button fx:id="test"/>
+                        <IconButton icon="ARROW_UPWARD" iconColor="white" text="Upload"
+                                    styleClass="primary-button,primary-font"
+                                    ButtonBar.buttonData="RIGHT"/>
+                    </buttons>
+                </ButtonBar>
+            </children>
+        </HBox>
+    </bottom>
 </BorderPane>

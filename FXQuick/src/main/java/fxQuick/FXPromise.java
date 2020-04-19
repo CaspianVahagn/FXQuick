@@ -1,164 +1,145 @@
 package fxQuick;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
+import java.util.concurrent.*;
+
 public class FXPromise<T> {
-	private  ExecutorService service = Executors.newSingleThreadExecutor( r -> {
-		Thread t = Executors.defaultThreadFactory().newThread(r);
-		t.setDaemon(true);
-		return t;
-	});
-	
-	SimpleObjectProperty<Exception> errorProperty = new SimpleObjectProperty<>(null);
+    SimpleObjectProperty<Exception> errorProperty = new SimpleObjectProperty<>(null);
+    SimpleObjectProperty<T> simpleObjectProperty = new SimpleObjectProperty<>(null);
+    private ExecutorService service = Executors.newSingleThreadExecutor(r -> {
+        Thread t = Executors.defaultThreadFactory().newThread(r);
+        t.setDaemon(true);
+        return t;
+    });
 
-	public interface FXPromiseCallback<T> {
+    /**
+     * Runs a callable function asynchronously.
+     *
+     * @param fun :the callable function
+     * @return returns a FXPromise<T> object. call await() to work with called object
+     * when ready
+     */
+    public FXPromise<T> async(Callable<T> fun) {
 
-		public void awaitExecution(T param);
+        Thread thread = new Thread(() -> {
+            try {
+                simpleObjectProperty.set(fun.call());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-	}
+        });
+        thread.setDaemon(true);
+        thread.start();
+        return this;
 
-	public interface FXPromiseCallBackExept<T> {
-		public void awaitExecution(Exception err, T param);
-	}
+    }
 
-	SimpleObjectProperty<T> simpleObjectProperty = new SimpleObjectProperty<>(null);
+    @SuppressWarnings("unchecked")
+    public FXPromise<T> async(long timeout, Callable<T> fun) {
 
-	/**
-	 * Runs a callable function asycronously.
-	 * 
-	 * @param fun :the callable function
-	 * @return returns a FXAsync object. call await() to work with called object
-	 *         when ready
-	 * 
-	 */
-	public FXPromise<T> async(Callable<T> fun) {
+        Thread thread = new Thread(() -> {
 
-		Thread thread = new Thread(() -> {
-			try {
-				simpleObjectProperty.set(fun.call());
-			} catch (Exception e) {
+            Future<?> future = service.submit(fun);
+            try {
+                simpleObjectProperty.set((T) future.get(timeout, TimeUnit.MILLISECONDS));
+                service.shutdownNow();
+            } catch (TimeoutException e) {
+                future.cancel(true);
+                errorProperty.set(e);
+                service.shutdownNow();
 
-				e.printStackTrace();
-			}
-			
-		});
-		thread.setDaemon(true);
-		thread.start();
-		return this;
+            } catch (InterruptedException e) {
+                future.cancel(true);
+                errorProperty.set(e);
+                service.shutdownNow();
 
-	}
+            } catch (ExecutionException e) {
+                future.cancel(true);
+                errorProperty.set(e);
+                service.shutdownNow();
+            }
 
-	@SuppressWarnings("unchecked")
-	public FXPromise<T> async(long timeout, Callable<T> fun) {
-		
-		Thread thread = new Thread(() -> {
-			
-			Future<?> future = service.submit(fun);
-			try {
-				
-				
-				simpleObjectProperty.set((T)future.get(timeout, TimeUnit.MILLISECONDS));
-				service.shutdownNow();
-			} catch (TimeoutException e) {
-				future.cancel(true);
-				errorProperty.set(e);
-				service.shutdownNow();
-			
-			} catch (InterruptedException e) {
-				future.cancel(true);
-				errorProperty.set(e);
-				service.shutdownNow();
-				
-			} catch (ExecutionException e) {
-				future.cancel(true);
-				errorProperty.set(e);
-				
-				service.shutdownNow();
-				
-			}
-			
-		});
-		thread.setDaemon(true);
-		thread.start();
-		return this;
+        });
+        thread.setDaemon(true);
+        thread.start();
+        return this;
 
-	}
+    }
 
-	/**
-	 * awaits a result for the asyncronously called function. executes the promised
-	 * function when result is ready. Function will be queued in the FX Thread.
-	 * 
-	 * @param promise
-	 */
-	public void await(FXPromiseCallback<T> promise) {
-		
-		if (simpleObjectProperty.get() != null) {
-			promise.awaitExecution(simpleObjectProperty.get());
-			service.shutdownNow();
-		} else {
-			simpleObjectProperty.addListener(new ChangeListener<T>() {
+    /**
+     * awaits a result for the asynchronously called function. executes the promised
+     * function when result is ready. Function will be queued in the FX Thread.
+     *
+     * @param promise
+     */
+    public void await(FXPromiseCallback<T> promise) {
 
-				@Override
-				public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-					Platform.runLater(() -> {
-						service.shutdownNow();
-						promise.awaitExecution(newValue);
+        if (simpleObjectProperty.get() != null) {
+            promise.awaitExecution(simpleObjectProperty.get());
+            service.shutdownNow();
+        } else {
+            simpleObjectProperty.addListener(new ChangeListener<T>() {
 
-					});
+                @Override
+                public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+                    Platform.runLater(() -> {
+                        service.shutdownNow();
+                        promise.awaitExecution(newValue);
 
-				}
-			});
-		}
-	}
+                    });
+                }
+            });
+        }
+    }
 
-	public void await(FXPromiseCallBackExept<T> promise) {
-		
-		if(errorProperty.get()!= null) {
-			promise.awaitExecution(errorProperty.get(),null);
-			service.shutdownNow();
-		}else {
-			errorProperty.addListener(new ChangeListener<Exception>() {
+    public void await(FXPromiseCallBackExept<T> promise) {
+        if (errorProperty.get() != null) {
+            promise.awaitExecution(errorProperty.get(), null);
+            service.shutdownNow();
+        } else {
+            errorProperty.addListener(new ChangeListener<Exception>() {
 
-				@Override
-				public void changed(ObservableValue<? extends Exception> observable,Exception oldValue, Exception newValue) {
-					
-					Platform.runLater(() -> {
-						service.shutdownNow();
-						promise.awaitExecution(newValue, null);
+                @Override
+                public void changed(ObservableValue<? extends Exception> observable, Exception oldValue, Exception newValue) {
 
-					});
+                    Platform.runLater(() -> {
+                        service.shutdownNow();
+                        promise.awaitExecution(newValue, null);
 
-				}
-			});
-		}
-		if (simpleObjectProperty.get() != null) {
-			
-			promise.awaitExecution(errorProperty.get(), simpleObjectProperty.get());
-		} else {
-			simpleObjectProperty.addListener(new ChangeListener<T>() {
+                    });
 
-				@Override
-				public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-					Platform.runLater(() -> {
-						service.shutdownNow();
-						promise.awaitExecution(errorProperty.get(), newValue);
+                }
+            });
+        }
+        if (simpleObjectProperty.get() != null) {
+            promise.awaitExecution(errorProperty.get(), simpleObjectProperty.get());
+        } else {
+            simpleObjectProperty.addListener(new ChangeListener<T>() {
 
-					});
+                @Override
+                public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+                    Platform.runLater(() -> {
+                        service.shutdownNow();
+                        promise.awaitExecution(errorProperty.get(), newValue);
 
-				}
-			});
-		}
-	}
+                    });
+
+                }
+            });
+        }
+    }
+
+    public interface FXPromiseCallback<T> {
+        public void awaitExecution(T param);
+    }
+
+    public interface FXPromiseCallBackExept<T> {
+        public void awaitExecution(Exception err, T param);
+    }
 
 }
