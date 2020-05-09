@@ -63,13 +63,13 @@ public class SampleAppLauncher extends Application {
             @Override
             public void handle(long now) {
                 if (Thread.activeCount() != i.get()) {
-                    Thread.getAllStackTraces().entrySet().stream().forEach(threadEntry -> {
+                    /*Thread.getAllStackTraces().entrySet().stream().forEach(threadEntry -> {
                         System.out.println("--Thread : " + threadEntry.getKey() );
                         Stream.of(threadEntry.getValue()).forEach(stackTraceElement -> {
                             System.out.println("\t \\_ Calls: " + stackTraceElement.getClassName() +"."+ stackTraceElement.getMethodName());
 
                         });
-                    });
+                    });*/
                     System.out.println("Number of active threads from the given thread: " + Thread.activeCount());
                     i.set(Thread.activeCount());
                 }

@@ -3,6 +3,7 @@ package sample.application.service;
 import fxQuick.annotations.FXInject;
 import fxQuick.annotations.FXService;
 
+import java.util.Collections;
 import java.util.Map;
 
 @FXService
@@ -32,7 +33,7 @@ public class SampleService {
 
     public Map<String,Object> helloTest(){
         System.out.println("CALL MEEEE");
-        return testFeignFX.getTest();
+        return testFeignFX.postTest(Collections.singletonMap("Hallo","Server"));
     }
 
 }

@@ -1,15 +1,15 @@
 package sample.application.service;
 
-import fxQuick.FXFeign.TestFeign;
+import fxQuick.FXFeign.FXFeignClient;
 import fxQuick.annotations.FXService;
 
 @FXService
 public class OtherService {
 
-    TestFeign testFeign;
+    FXFeignClient fxFeignClient;
 
-    public OtherService(TestFeign testFeign) {
-        this.testFeign = testFeign;
+    public OtherService(FXFeignClient testFeign) {
+        this.fxFeignClient = testFeign;
     }
 
     public void test() {

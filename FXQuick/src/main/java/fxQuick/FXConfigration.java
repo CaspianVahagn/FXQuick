@@ -4,6 +4,8 @@ import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
+import fxQuick.FXFeign.FXFeignClient;
+import fxQuick.FXFeign.FXFeignConfig;
 import fxQuick.annotations.*;
 import fxQuick.exeptions.AnnotationScanException;
 import fxQuick.exeptions.FXViewException;
@@ -220,15 +222,52 @@ public class FXConfigration {
                 Object o;
                 try {
                     FXFeignClient client = getAnnotation(FXFeignClient.class, clazz);
-                    o = Feign.builder()
-                            .client(new OkHttpClient())
-                            .encoder(new JacksonEncoder())
-                            .decoder(new JacksonDecoder())
-                            .target(clazz, client.baseUrl() + "/" + client.api());
+
+                    if(client.config() != FXFeignClient.class){
+                        FXFeignConfig config =(FXFeignConfig) client.config().getDeclaredConstructor().newInstance();
+                        Feign.Builder builder = Feign.builder()
+                                .client(config.client())
+                                .encoder(config.encoder())
+                                .decoder(config.decoder());
+                        if(config.requestInterceptor() !=null) {
+                            builder.requestInterceptor(config.requestInterceptor());
+                        }
+                        if(config.requestInterceptors() !=null) {
+                            builder.requestInterceptors(config.requestInterceptors());
+                        }
+                        if(config.logger() !=null) {
+                            builder.logger(config.logger());
+                        }
+                        if(config.logLevel() !=null) {
+                            builder.logLevel(config.logLevel());
+                        }
+                        if(config.exceptionPropagationPolicy() !=null) {
+                            builder.exceptionPropagationPolicy(config.exceptionPropagationPolicy());
+                        }
+                        if(config.errorDecoder() !=null) {
+                            builder.errorDecoder(config.errorDecoder());
+                        }
+                        if(config.contract() != null){
+                            builder.contract(config.contract());
+                        }
+                        o = builder.target(clazz, client.baseUrl() + "/" + client.api());
+                    }else {
+                        o = Feign.builder()
+                                .client(new OkHttpClient())
+                                .encoder(new JacksonEncoder())
+                                .decoder(new JacksonDecoder())
+                                .target(clazz, client.baseUrl() + "/" + client.api());
+                    }
                     ServiceManager.CLASSES.put(clazz, o);
-                } catch (NoClassDefFoundError e ) {
+                } catch (NoClassDefFoundError | NoSuchMethodException e ) {
                     e.printStackTrace();
                     throw new FXViewException("Can't initialize Feign client");
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
                 }
             }
         }

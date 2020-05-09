@@ -1,4 +1,4 @@
-package fxQuick.annotations;
+package fxQuick.FXFeign;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,6 +13,7 @@ public @interface FXFeignClient {
      *
      *
      */
+    Class config() default FXFeignClient.class;
 
     String baseUrl();
 
