@@ -1,8 +1,6 @@
 package fxQuick;
 
 public enum MatIcons {
-
-
     ROTATION_3D('\ue84d'),
     AC_UNIT('\ueb3b'),
     ACCESS_ALARM('\ue190'),

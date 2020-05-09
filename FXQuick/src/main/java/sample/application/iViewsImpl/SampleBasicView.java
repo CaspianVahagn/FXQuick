@@ -1,15 +1,22 @@
 package sample.application.iViewsImpl;
 
+import sample.application.service.SampleService;
+import sample.application.service.TestFeignFX;
 import fxQuick.FXUtils;
+import fxQuick.annotations.FXInject;
+import fxQuick.annotations.ViewConfig;
 import fxQuick.iViews.FXView;
 import fxQuick.iViews.Props;
-import fxQuick.iconControl.IconButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+@ViewConfig(
+        fxml = "view/sample.fxml",
+        styleSheets = ""
+)
 public class SampleBasicView extends FXView {
 
     @FXML
@@ -20,17 +27,24 @@ public class SampleBasicView extends FXView {
 
     private SampleChartView otherview;
 
+    @FXML
+    private Props values;
+
+    @FXInject
+    SampleService sampleService;
+
     public SampleBasicView() {
         super();
     }
 
     public SampleBasicView(Props props) {
         super(props);
+        props.add("text","bananananaanan");
+        this.values = props;
     }
 
     @Override
     public void init(Props props) {
-        loadFXML("view/sample.fxml");
         async(200, () -> {
             Thread.sleep(1000);
             return "hello";
@@ -44,9 +58,12 @@ public class SampleBasicView extends FXView {
     }
 
     public void basicAction(ActionEvent e) {
-
-        switchTo(new SampleBasicView2());
-
+        async(() -> {
+            return sampleService.helloTest();
+            //return "HELLOOO";
+        }).await((err, param) -> {
+            System.out.println(param);
+        });
     }
 
 }

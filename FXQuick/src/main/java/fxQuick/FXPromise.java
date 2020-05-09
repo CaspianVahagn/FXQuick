@@ -43,32 +43,28 @@ public class FXPromise<T> {
     public FXPromise<T> async(long timeout, Callable<T> fun) {
 
         Thread thread = new Thread(() -> {
-
             Future<?> future = service.submit(fun);
             try {
                 simpleObjectProperty.set((T) future.get(timeout, TimeUnit.MILLISECONDS));
                 service.shutdownNow();
             } catch (TimeoutException e) {
+                e= new TimeoutException("Time out after " + timeout + " ms");
                 future.cancel(true);
                 errorProperty.set(e);
                 service.shutdownNow();
-
             } catch (InterruptedException e) {
                 future.cancel(true);
                 errorProperty.set(e);
                 service.shutdownNow();
-
             } catch (ExecutionException e) {
                 future.cancel(true);
                 errorProperty.set(e);
                 service.shutdownNow();
             }
-
         });
         thread.setDaemon(true);
         thread.start();
         return this;
-
     }
 
     /**
@@ -97,7 +93,7 @@ public class FXPromise<T> {
         }
     }
 
-    public void await(FXPromiseCallBackExept<T> promise) {
+    public void await(FXPromiseCallBackExcept<T> promise) {
         if (errorProperty.get() != null) {
             promise.awaitExecution(errorProperty.get(), null);
             service.shutdownNow();
@@ -106,13 +102,10 @@ public class FXPromise<T> {
 
                 @Override
                 public void changed(ObservableValue<? extends Exception> observable, Exception oldValue, Exception newValue) {
-
                     Platform.runLater(() -> {
                         service.shutdownNow();
                         promise.awaitExecution(newValue, null);
-
                     });
-
                 }
             });
         }
@@ -135,11 +128,11 @@ public class FXPromise<T> {
     }
 
     public interface FXPromiseCallback<T> {
-        public void awaitExecution(T param);
+        void awaitExecution(T param);
     }
 
-    public interface FXPromiseCallBackExept<T> {
-        public void awaitExecution(Exception err, T param);
+    public interface FXPromiseCallBackExcept<T> {
+        void awaitExecution(Exception err, T param);
     }
 
 }

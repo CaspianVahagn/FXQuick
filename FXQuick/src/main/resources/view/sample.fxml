@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import fxQuick.iconControl.IconButton?>
-<?import fxQuick.iconControl.IconLabel?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Button?>
+<?import fxQuick.icon.Icon?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Rectangle?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" styleClass="default-bg"
             fx:controller="sample.application.iViewsImpl.SampleBasicView">
 
     <top>
-        <IconLabel icon="ol:ACCOUNT_BOX" iconColor="white" text="hallo" styleClass="primary-font"></IconLabel>
+        <Label text="hallo" styleClass="primary-font"></Label>
     </top>
     <center>
         <Text fx:id="HalloWelt" text="hallo" styleClass="primary-font"></Text>
@@ -21,10 +23,12 @@
             <children>
                 <ButtonBar>
                     <buttons>
-                        <Button fx:id="test"/>
-                        <IconButton icon="ARROW_UPWARD" iconColor="white" text="Upload"
-                                    styleClass="primary-button,primary-font"
-                                    ButtonBar.buttonData="RIGHT"/>
+                        <Button fx:id="test" onAction="#basicAction"/>
+                        <Button styleClass="primary-button,primary-font" ButtonBar.buttonData="RIGHT" >
+                            <graphic>
+                                <Icon iconName="ADD_CIRCLE"></Icon>
+                            </graphic>
+                        </Button>
                     </buttons>
                 </ButtonBar>
             </children>

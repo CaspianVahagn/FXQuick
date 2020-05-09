@@ -1,6 +1,9 @@
 package fxQuick.iViews;
 
 import fxQuick.ServiceManager;
+import fxQuick.annotations.FXScan;
+import fxQuick.annotations.ViewConfig;
+import fxQuick.exeptions.AnnotationScanException;
 import fxQuick.exeptions.FXViewException;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableMap;
@@ -14,11 +17,14 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
+import javax.swing.text.View;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -51,12 +57,14 @@ public abstract class FXView extends FXBase {
 
     public FXView() {
         super();
+        processAnnotations();
         init(new Props());
 
     }
 
     public FXView(Props props) {
         super();
+        processAnnotations();
         init(props);
 
     }
@@ -67,20 +75,30 @@ public abstract class FXView extends FXBase {
         return nodes;
     }
 
+    private boolean processAnnotations(){
+        Class annotationClass = ViewConfig.class;
+        Class applicationClass =this.getClass();
+        if(applicationClass.isAnnotationPresent(annotationClass)){
+            Annotation annotation = applicationClass.getAnnotation(annotationClass);
+            ViewConfig viewConfig = (ViewConfig) annotation;
+            loadFXML(viewConfig.fxml());
+            ((Parent)root).getStylesheets().addAll(viewConfig.styleSheets());
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     private static void addAllDescendents(Parent parent, ArrayList<IncludeView> nodes) {
         for (Node node : parent.getChildrenUnmodifiable()) {
-
             if (node instanceof IncludeView) {
                 nodes.add((IncludeView) node);
             }
             if (node instanceof TabPane) {
                 TabPane p = (TabPane) node;
-
                 for (Tab tnode : p.getTabs()) {
-
                     if (tnode.getContent() instanceof Parent)
                         addAllDescendents((Parent) tnode.getContent(), nodes);
-
                 }
             }
             if (node instanceof Parent)

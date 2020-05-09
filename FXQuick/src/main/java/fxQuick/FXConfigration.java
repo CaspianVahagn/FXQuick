@@ -1,21 +1,24 @@
 package fxQuick;
 
-import fxQuick.annotations.FXController;
-import fxQuick.annotations.FXInject;
-import fxQuick.annotations.FXScan;
-import fxQuick.annotations.FXService;
+import feign.Feign;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
+import feign.okhttp.OkHttpClient;
+import fxQuick.annotations.*;
 import fxQuick.exeptions.AnnotationScanException;
+import fxQuick.exeptions.FXViewException;
 import javafx.application.Application;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Configuration for Injection.
@@ -51,11 +54,10 @@ public class FXConfigration {
 
     public static void init(Application application){
         app = application;
-        Class annotationClass = FXScan.class;
+        Class<FXScan> annotationClass = FXScan.class;
         Class applicationClass =application.getClass();
         if(applicationClass.isAnnotationPresent(annotationClass)){
-            Annotation annotation = applicationClass.getAnnotation(annotationClass);
-            FXScan fxScan = (FXScan) annotation;
+            FXScan fxScan = getAnnotation(annotationClass, applicationClass);
             scanServices(fxScan.rootPackages());
             scanRuntimeInjections(fxScan.rootPackages());
             dev = fxScan.dev();
@@ -76,6 +78,11 @@ public class FXConfigration {
         }else{
             throw new AnnotationScanException("Application class, has incomplete or no Anntotation present");
         }
+    }
+
+    private static <T> T getAnnotation(Class<T> annotationClass, Class applicationClass) {
+        Annotation annotation = applicationClass.getAnnotation(annotationClass);
+        return (T) annotation;
     }
 
     private static void scanServices(String... packageNames) {
@@ -108,24 +115,13 @@ public class FXConfigration {
 
         for (String packageName : packageNames) {
             Reflections refs = (new Reflections(packageName));
-            Set<Class<?>> annotatedClasses = refs.getTypesAnnotatedWith(FXController.class);
-            annotatedClasses.addAll(refs.getTypesAnnotatedWith(FXService.class));
-            for (Class<?> clazz : annotatedClasses) {
-                System.out.println("---> " + clazz.getName());
-                if (!Modifier.isAbstract(clazz.getModifiers())) {
-                    Object o;
-                    try {
-                        o = clazz.getDeclaredConstructor().newInstance();
-                        ServiceManager.CLASSES.put(clazz, o);
-                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
+            initFeignClients(refs);
+            System.out.println("----------- Init Feign Done");
+            InitSerivesAndController(refs);
         }
         FieldAnnotationsScanner scanner = new FieldAnnotationsScanner();
         for (Object o : ServiceManager.CLASSES.values()) {
+            if(!o.getClass().isInterface()) continue;
             Set<Field> fields = (new Reflections(o.getClass(), scanner).getFieldsAnnotatedWith(FXInject.class));
             for (Field field : fields) {
                 if (field.getDeclaringClass().equals(o.getClass())) {
@@ -135,7 +131,6 @@ public class FXConfigration {
                     } catch (IllegalArgumentException e) {
                         e.printStackTrace();
                     } catch (IllegalAccessException e) {
-
                         e.printStackTrace();
                     }
                 }
@@ -143,6 +138,100 @@ public class FXConfigration {
             }
         }
         System.out.println("------------------- FXServices initialized -----------------\n");
+    }
+
+    private static void InitSerivesAndController(Reflections refs) {
+        Set<Class<?>> annotatedClasses = refs.getTypesAnnotatedWith(FXController.class);
+        annotatedClasses.addAll(refs.getTypesAnnotatedWith(FXService.class));
+        List<Class<?>> listOfAnnotations = annotatedClasses.stream().collect(Collectors.toList());
+        listOfAnnotations.sort((aClass, t1) -> {
+                int a = Stream.of(aClass.getDeclaredConstructors()).findFirst().get().getParameterCount();
+                int b = Stream.of(t1.getDeclaredConstructors()).findFirst().get().getParameterCount();
+                return Integer.compare(a, b);
+        });
+
+        List<Class<?>> initLater = new ArrayList<>();
+        InitialitializingWithConstructor(listOfAnnotations, initLater);
+        int counter = 0;
+        while(true){
+            if(initLater.isEmpty()) break;
+            System.out.println("Another round for: " + initLater);
+            List<Class<?>> checklist = new ArrayList<>();
+            InitialitializingWithConstructor(initLater,checklist);
+            initLater = checklist;
+            Collections.shuffle(initLater);
+            counter ++;
+            if(counter > 100){
+                var classes = initLater.stream().map(aClass -> "\n" + aClass.getName() + "\n \t \\____With constructor parameters with types: "
+                        + Stream.of(aClass.getDeclaredConstructors()).collect(Collectors.toList())).collect(Collectors.toList()) + " \n";
+                throw new AnnotationScanException("Possible circular dependency Injection within Classes: \n" + classes );
+            }
+        }
+
+    }
+
+    private static void InitialitializingWithConstructor(List<Class<?>> listOfAnnotations, List<Class<?>> initLater) {
+        for (Class<?> clazz : listOfAnnotations) {
+            System.out.println("---> Prepare  " + clazz.getName());
+            if (!Modifier.isAbstract(clazz.getModifiers())) {
+                Object o;
+                try {
+                    Constructor constructor;
+                    if(clazz.getDeclaredConstructors().length == 1){
+                        constructor = clazz.getDeclaredConstructors()[0];
+                    }else {
+                        constructor = Stream.of(clazz.getDeclaredConstructors()).filter(constructor1 -> {
+                           return constructor1.isAnnotationPresent(FXInject.class);
+                        }).findFirst().orElseThrow(() ->
+                                new AnnotationScanException("Class :" + clazz.getName() + " hast multiple Constructors  can't find annotation @FXInject"));
+                    }
+                    Object[] initialized = new Object[constructor.getParameterCount()];
+                    int i = 0;
+                    boolean shouldInit = true;
+                    for(Class<?> aClass: constructor.getParameterTypes()){
+                        if(aClass.isAnnotationPresent(FXService.class) || aClass.isAnnotationPresent(FXController.class) || aClass.isAnnotationPresent(FXFeignClient.class)){
+                            if(ServiceManager.CLASSES.containsKey(aClass)){
+                                System.out.println("Instance found " + aClass.getName());
+                                initialized[i] = ServiceManager.CLASSES.get(aClass);
+                            }else{
+                                initLater.add(clazz);
+                                shouldInit = false;
+                            }
+                        }
+                        i++;
+                    }
+                    System.out.println("WEEO : " + initialized.length + " expected:" + constructor.getParameterCount());
+                    if(!shouldInit) continue;
+                    o = constructor.newInstance(initialized);
+                    ServiceManager.CLASSES.put(clazz, o);
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    private static void initFeignClients(Reflections refs) {
+        Set<Class<?>> annotatedClients = refs.getTypesAnnotatedWith(FXFeignClient.class);
+        for (Class<?> clazz : annotatedClients) {
+            System.out.println("---> Client enabled " + clazz.getName());
+            if (Modifier.isInterface(clazz.getModifiers())) {
+                Object o;
+                try {
+                    FXFeignClient client = getAnnotation(FXFeignClient.class, clazz);
+                    o = Feign.builder()
+                            .client(new OkHttpClient())
+                            .encoder(new JacksonEncoder())
+                            .decoder(new JacksonDecoder())
+                            .target(clazz, client.baseUrl() + "/" + client.api());
+                    ServiceManager.CLASSES.put(clazz, o);
+                } catch (NoClassDefFoundError e ) {
+                    e.printStackTrace();
+                    throw new FXViewException("Can't initialize Feign client");
+                }
+            }
+        }
     }
 
     private static void applyScanRuntimeInjections(String... packageNames) {

@@ -4,14 +4,18 @@ package sample.application.iViewsImpl;
 import fxQuick.MatIcons;
 import fxQuick.iViews.FXView;
 import fxQuick.iViews.Props;
-import fxQuick.iconControl.IconButton;
-import fxQuick.iconControl.IconLabel;
+import fxQuick.icon.Icon;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+
 
 public class SampleChartView extends FXView {
 
@@ -20,7 +24,7 @@ public class SampleChartView extends FXView {
     @FXML
     VBox iconBox;
     @FXML
-    IconButton miau;
+    Button miau;
 
     public SampleChartView() {
         super();
@@ -38,20 +42,21 @@ public class SampleChartView extends FXView {
         async(() -> {
 
             for (MatIcons icon : MatIcons.values()) {
-                IconLabel il = new IconLabel();
-                il.setText(icon.toString());
-                il.setIcon("ol:" + icon.toString());
+                Icon il = new Icon();
+                il.setIconName(icon.toString());
                 il.minWidth(60);
                 il.getStyleClass().add("primary-font");
-                il.setIconColor("white");
+                il.setFill(Color.WHITE);
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                Platform.runLater(() -> iconBox.getChildren().add(il));
-
+                Label l = new Label(icon.name());
+                l.getStyleClass().add("primary-font");
+                l.setGraphic(il);
+                Platform.runLater(() -> iconBox.getChildren().add(l));
             }
             return 23;
         }).await((i) -> {

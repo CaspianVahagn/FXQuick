@@ -5,8 +5,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.CONSTRUCTOR,ElementType.PARAMETER})
-public @interface FXInject {
 
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface FXFeignClient {
+    /**
+     *
+     *
+     */
+
+    String baseUrl();
+
+    String api();
 }

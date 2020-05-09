@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.CONSTRUCTOR,ElementType.PARAMETER})
-public @interface FXInject {
-
+@Target(ElementType.TYPE)
+public @interface ViewConfig {
+    String fxml();
+    String[] styleSheets();
 }

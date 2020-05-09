@@ -1,4 +1,4 @@
-<?import fxQuick.iconControl.IconButton?>
+
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" stylesheets="chartStyle.css" styleClass="default-bg"
             fx:controller="sample.application.iViewsImpl.SampleChartView">
-
     <top>
-        <IconButton fx:id="miau" icon="DOCK" iconColor="white" text="Upload" styleClass="primary-button,primary-font"/>
+        <Button fx:id="miau" text="Upload" styleClass="primary-button,primary-font"/>
     </top>
     <left>
         <ScrollPane styleClass="default-bg">
@@ -32,7 +32,7 @@
                         <NumberAxis side="LEFT" fx:id="xAxis" label="Stunden"/>
                     </yAxis>
                 </BarChart>
-                <IconButton icon="REPLY" iconColor="white" text="Upload" onAction="#backTo"
+                <Button text="Upload" onAction="#backTo"
                             styleClass="primary-button,primary-font"/>
             </children>
 
