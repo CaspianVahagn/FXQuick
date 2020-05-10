@@ -28,7 +28,7 @@ public class HotCssScheduler extends AnimationTimer {
                 for (int i = 0; i < names.length; i++) {
                     try {
                         if (nameMap.containsKey(names[i])) {
-                            String newhash = new String(new FileInputStream(new URL(names[i].replace(BUILD_LOC,SOURCE_LOC)).getFile()).readAllBytes());
+                            String newhash = new String(new FileInputStream(new URL(names[i].replace(BUILD_LOC,SOURCE_LOC)).getFile()).readNBytes(1000));
                             System.out.println(names[i]);
                             if (!newhash.equals(nameMap.get(names[i].replace(BUILD_LOC,SOURCE_LOC)))) {
                                 nameMap.put(names[i].replace(BUILD_LOC,SOURCE_LOC), newhash);
