@@ -2,10 +2,7 @@ package fxQuick;
 
 import javafx.animation.AnimationTimer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +25,10 @@ public class HotCssScheduler extends AnimationTimer {
                 for (int i = 0; i < names.length; i++) {
                     try {
                         if (nameMap.containsKey(names[i])) {
-                            String newhash = new String(new FileInputStream(new URL(names[i].replace(BUILD_LOC,SOURCE_LOC)).getFile()).readNBytes(1000));
+                            //FileInputStream fis = new FileInputStream(new URL(names[i].replace(BUILD_LOC,SOURCE_LOC)).getFile());
+                            BufferedReader reader = new BufferedReader(new FileReader(new URL(names[i].replace(BUILD_LOC,SOURCE_LOC)).getFile()));
+                            String currentLine = reader.lines().reduce( (a,b)-> a+b).get();
+                            String newhash =currentLine;
                             System.out.println(names[i]);
                             if (!newhash.equals(nameMap.get(names[i].replace(BUILD_LOC,SOURCE_LOC)))) {
                                 nameMap.put(names[i].replace(BUILD_LOC,SOURCE_LOC), newhash);
