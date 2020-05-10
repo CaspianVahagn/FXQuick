@@ -98,7 +98,6 @@ public class FXPromise<T> {
             service.shutdownNow();
         }else {
             errorProperty.addListener(new ChangeListener<Exception>() {
-
                 @Override
                 public void changed(ObservableValue<? extends Exception> observable, Exception oldValue, Exception newValue) {
                     Platform.runLater(() -> {
@@ -137,7 +136,6 @@ public class FXPromise<T> {
                     Platform.runLater(() -> {
                         service.shutdownNow();
                         promise.awaitExecution(errorProperty.get(), newValue);
-
                     });
 
                 }
