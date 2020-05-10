@@ -81,17 +81,34 @@ public class FXPromise<T> {
             service.shutdownNow();
         } else {
             simpleObjectProperty.addListener(new ChangeListener<T>() {
-
                 @Override
                 public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
                     Platform.runLater(() -> {
                         service.shutdownNow();
                         promise.awaitExecution(newValue);
-
                     });
                 }
             });
         }
+    }
+
+    public FXPromise<T> onError(FXOnError onError){
+        if (errorProperty.get() != null) {
+            onError.handleError(errorProperty.get());
+            service.shutdownNow();
+        }else {
+            errorProperty.addListener(new ChangeListener<Exception>() {
+
+                @Override
+                public void changed(ObservableValue<? extends Exception> observable, Exception oldValue, Exception newValue) {
+                    Platform.runLater(() -> {
+                        service.shutdownNow();
+                        onError.handleError(newValue);
+                    });
+                }
+            });
+        }
+        return this;
     }
 
     public void await(FXPromiseCallBackExcept<T> promise) {
@@ -134,6 +151,10 @@ public class FXPromise<T> {
 
     public interface FXPromiseCallBackExcept<T> {
         void awaitExecution(Exception err, T param);
+    }
+
+    public interface FXOnError{
+        void handleError(Exception err);
     }
 
 }
