@@ -63,8 +63,7 @@ public class FXInitialization {
             scanServices(fxScan.rootPackages());
             scanRuntimeInjections(fxScan.rootPackages());
             dev = fxScan.dev();
-            String[] viewPackages = List.of(Package.getPackages())
-                    .stream()
+            String[] viewPackages = Stream.of(Package.getPackages())
                     .filter(aPackage -> {
                 for (int i = 0; i < fxScan.rootPackages().length;i++){
                     if(aPackage.getName().contains(fxScan.rootPackages()[i])){
@@ -167,7 +166,7 @@ public class FXInitialization {
             Collections.shuffle(initLater);
             counter ++;
             if(counter > 100){
-                var classes = initLater.stream().map(aClass -> "\n" + aClass.getName() + "\n \t \\____With constructor parameters with types: "
+                String classes = initLater.stream().map(aClass -> "\n" + aClass.getName() + "\n \t \\____With constructor parameters with types: "
                         + Stream.of(aClass.getDeclaredConstructors()).collect(Collectors.toList())).collect(Collectors.toList()) + " \n";
                 throw new AnnotationScanException("Possible circular dependency Injection within Classes: \n" + classes );
             }
