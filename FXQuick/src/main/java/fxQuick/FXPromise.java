@@ -29,7 +29,8 @@ public class FXPromise<T> {
             try {
                 simpleObjectProperty.set(fun.call());
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Entered the Matrix");
+                errorProperty.set(e);
             }
 
         });

@@ -82,7 +82,9 @@ public abstract class FXView extends FXBase {
             Annotation annotation = applicationClass.getAnnotation(annotationClass);
             ViewConfig viewConfig = (ViewConfig) annotation;
             loadFXML(viewConfig.fxml());
-            ((Parent)root).getStylesheets().addAll(viewConfig.styleSheets());
+            if(viewConfig.styleSheets().length >= 1){
+                ((Parent)root).getStylesheets().addAll(viewConfig.styleSheets());
+            }
             return true;
         }else{
             return false;

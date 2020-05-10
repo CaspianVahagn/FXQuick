@@ -1,5 +1,6 @@
 package sample.application.iViewsImpl;
 
+import fxQuick.FXFeign.ErrorResponse;
 import sample.application.service.SampleService;
 import sample.application.service.TestFeignFX;
 import fxQuick.FXUtils;
@@ -13,10 +14,10 @@ import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-@ViewConfig(
-        fxml = "view/sample.fxml",
-        styleSheets = ""
-)
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+@ViewConfig(fxml = "view/sample.fxml")
 public class SampleBasicView extends FXView {
 
     @FXML
@@ -62,7 +63,11 @@ public class SampleBasicView extends FXView {
             return sampleService.helloTest();
             //return "HELLOOO";
         }).await((err, param) -> {
-            System.out.println(param);
+            ErrorResponse errorResponse = (ErrorResponse) err;
+            System.out.println(errorResponse.getMessage());
+
+            System.out.println(errorResponse.getResponse().request().url());
+            System.out.println(errorResponse.getResponse().headers());
         });
     }
 

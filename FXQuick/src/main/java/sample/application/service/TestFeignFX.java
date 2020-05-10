@@ -7,7 +7,7 @@ import fxQuick.FXFeign.FXFeignClient;
 import java.util.Map;
 
 @Headers("Content-Type: application/json")
-@FXFeignClient(baseUrl = "http://localhost:8081", api = "test")
+@FXFeignClient(baseUrl = "http://localhost:8081", api = "test", config = ConfigForFeign.class)
 public interface TestFeignFX {
 
     @RequestLine("GET")
@@ -16,7 +16,7 @@ public interface TestFeignFX {
     @RequestLine("GET /hello")
     public Map<String,Object> getTest2();
 
-    @RequestLine("POST")
+    @RequestLine("POST /hello")
     @Headers("Content-Type: application/json")
     public Map<String,Object> postTest(Map<String,Object> value);
 }

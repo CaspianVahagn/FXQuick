@@ -1,8 +1,7 @@
 package sample.application.main;
 
-import fxQuick.FXConfigration;
+import fxQuick.FXInitialization;
 import fxQuick.FXUtils;
-import fxQuick.HotCssScheduler;
 import fxQuick.annotations.FXScan;
 import fxQuick.iViews.FXView;
 import javafx.animation.AnimationTimer;
@@ -18,9 +17,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sample.application.iViewsImpl.SampleBasicView;
 
-import java.io.IOException;
-import java.util.stream.Stream;
-
 @FXScan(rootPackages = {"sample"}, dev = true)
 public class SampleAppLauncher extends Application {
 
@@ -29,7 +25,7 @@ public class SampleAppLauncher extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXConfigration.init(this);
+        FXInitialization.init(this);
 
         FXView view = new SampleBasicView();
         Parent root = (Parent) view.getRoot();
